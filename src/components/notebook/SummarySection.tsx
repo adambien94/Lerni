@@ -11,13 +11,13 @@ export function SummarySection() {
   return (
     <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
       <CardHeader className="border-b border-border/50 pb-5">
-        <CardTitle className="flex items-center gap-2 text-base font-medium">
+        <CardTitle className="flex items-center gap-2 text-base font-medium mb-0">
           <BookOpenText className="h-4 w-4 text-muted-foreground" />
           Podsumowanie
         </CardTitle>
-        <CardDescription>
+        {/* <CardDescription className="text-xs">
           Tu będzie wyświetlane podsumowanie wybranych artykułów.
-        </CardDescription>
+        </CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 p-5">
         <div className="rounded-2xl border border-border/70 bg-background/40 p-5">

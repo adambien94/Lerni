@@ -1,12 +1,12 @@
-import { PanelRight, FlaskConical, TestTube2, Edit } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  PanelRight,
+  FlaskConical,
+  TestTube2,
+  Edit,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type StudioSectionProps = {
   collapsed: boolean;
@@ -19,9 +19,9 @@ export function StudioSection({
 }: StudioSectionProps) {
   return (
     <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
-      <CardHeader className="border-b border-border/50 pb-5">
-        <div className="flex items-start justify-center gap-2">
-          <div>
+      <CardHeader className="border-b border-border/50 pb-3">
+        <div className="flex items-start justify-center">
+          <div className="w-full">
             <CardTitle className="flex items-center gap-2 text-base font-medium">
               {collapsed ? (
                 ""
@@ -31,11 +31,6 @@ export function StudioSection({
 
               {collapsed ? "" : "Studio"}
             </CardTitle>
-            {!collapsed && (
-              <CardDescription>
-                Wybierz akcję dla aktualnego notatnika.
-              </CardDescription>
-            )}
           </div>
           <Button
             variant="ghost"
@@ -44,7 +39,7 @@ export function StudioSection({
             aria-label={
               collapsed ? "Rozwiń sekcję Studio" : "Zwiń sekcję Studio"
             }
-            className="h-8 w-8 shrink-0"
+            className="h-8 w-8 shrink-0 translate-y-[-5px]"
           >
             <PanelRight className="h-4 w-4" />
           </Button>
@@ -53,30 +48,32 @@ export function StudioSection({
 
       {!collapsed && (
         <CardContent className="space-y-3 p-4 border-b border-border/50 pb-5">
-          <button className="group w-full rounded-2xl border border-border/70 bg-background/40 p-4 text-left transition-colors hover:bg-background/70">
-            <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-primary/15 p-2 text-primary">
+          <button className="group w-full rounded-2xl  bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]">
+            <div className="flex items-center gap-3 text-emerald-300">
+              <div>
                 <FlaskConical className="h-4 w-4" />
               </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold">Fiszki</p>
+                <p className="text-xs ">Wygeneruj zestaw do nauki.</p>
+              </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Fiszki</p>
-                <p className="text-xs text-muted-foreground">
-                  Wygeneruj zestaw do nauki.
-                </p>
+                <ChevronRight className="h-4 w-4" />
               </div>
             </div>
           </button>
 
-          <button className="group w-full rounded-2xl border border-border/70 bg-background/40 p-4 text-left transition-colors hover:bg-background/70">
-            <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-primary/15 p-2 text-primary">
+          <button className="group w-full rounded-2xl  bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]">
+            <div className="flex items-center gap-3 text-violet-300">
+              <div>
                 <TestTube2 className="h-4 w-4" />
               </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold">Test</p>
+                <p className="text-xs ">Sprawdź wiedzę z podsumowania.</p>
+              </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Test</p>
-                <p className="text-xs text-muted-foreground">
-                  Sprawdź wiedzę z podsumowania.
-                </p>
+                <ChevronRight className="h-4 w-4" />
               </div>
             </div>
           </button>
