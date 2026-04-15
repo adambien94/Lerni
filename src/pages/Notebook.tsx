@@ -14,10 +14,10 @@ export default function Notebook() {
   const desktopGridClass = sourcesCollapsed
     ? studioCollapsed
       ? "xl:grid-cols-[72px_minmax(0,1fr)_72px]"
-      : "xl:grid-cols-[72px_minmax(0,1fr)_260px]"
+      : "xl:grid-cols-[72px_minmax(0,1fr)_320px]"
     : studioCollapsed
       ? "xl:grid-cols-[320px_minmax(0,1fr)_72px]"
-      : "xl:grid-cols-[320px_minmax(0,1fr)_260px]";
+      : "xl:grid-cols-[320px_minmax(0,1fr)_320px]";
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[1980px] flex-col px-4 py-4">

@@ -1,8 +1,10 @@
 import { Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 function App() {
+  const navigate = useNavigate();
   const notebooks = [
     {
       id: "1",
@@ -25,52 +27,71 @@ function App() {
   ];
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-8 px-4 py-10">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Moje notatniki
-        </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          Wybierz notatnik, aby przejść do jego widoku roboczego.
-        </p>
-      </header>
+    <>
+      <header className="mx-auto w-full max-w-[1980px] space-y-6 p-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="relative">
+            {/* <span className="pointer-events-none absolute -inset-2 -z-10 rounded-xl bg-primary/25 blur-xl" />
+            <p className="bg-linear-to-r from-primary via-violet-400 to-cyan-300 bg-clip-text text-2xl font-black tracking-tight text-transparent sm:text-3xl">
+              Lerni
+            </p> */}
+          </div>
 
-      <section className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="border-dashed bg-card/40 transition-colors hover:bg-card/60">
-            <CardContent className="flex min-h-[180px] flex-col items-center justify-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
-                <Plus className="h-5 w-5" />
-              </div>
-              <p className="text-sm font-medium text-foreground">
-                Utwórz nowy notatnik
-              </p>
-            </CardContent>
-          </Card>
-
-          {notebooks.map((notebook) => (
-            <Link
-              key={notebook.id}
-              to={`/notebook/${notebook.id}`}
-              className="group"
-            >
-              <Card
-                className={`border-border/70 bg-linear-to-br ${notebook.bgClass} transition-transform duration-200 group-hover:-translate-y-0.5`}
-              >
-                <CardContent className="flex min-h-[180px] flex-col justify-end p-5">
-                  <h2 className="line-clamp-2 text-xl font-medium text-foreground">
-                    {notebook.title}
-                  </h2>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {notebook.meta}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => navigate("/login")}
+          >
+            Wyloguj się
+          </Button>
         </div>
-      </section>
-    </main>
+      </header>
+      <main className="min-h-scree max-w-5xl mx-auto w-full px-4 py-6">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Moje notatniki
+          </h1>
+          <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+            Wybierz notatnik, aby przejść do jego widoku roboczego.
+          </p>
+        </div>
+        <section className="mx-auto mt-8 w-full max-w-5xl space-y-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Card className="border-dashed bg-card/40 transition-colors hover:bg-card/60">
+              <CardContent className="flex min-h-[180px] flex-col items-center justify-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <Plus className="h-5 w-5" />
+                </div>
+                <p className="text-sm font-medium text-foreground">
+                  Utwórz nowy notatnik
+                </p>
+              </CardContent>
+            </Card>
+
+            {notebooks.map((notebook) => (
+              <Link
+                key={notebook.id}
+                to={`/notebook/${notebook.id}`}
+                className="group"
+              >
+                <Card
+                  className={`border-border/70 bg-linear-to-br ${notebook.bgClass} transition-transform duration-200 group-hover:-translate-y-0.5`}
+                >
+                  <CardContent className="flex min-h-[180px] flex-col justify-end p-5">
+                    <h2 className="line-clamp-2 text-xl font-medium text-foreground">
+                      {notebook.title}
+                    </h2>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {notebook.meta}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
 
