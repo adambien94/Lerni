@@ -1,103 +1,65 @@
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useAppStore } from '@/store/useAppStore'
+import { Plus } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Card, CardContent } from '@/components/ui/card'
 
 function App() {
-  const { sourceUrl, setSourceUrl, addSource, clearSources, sources } = useAppStore()
+  const notebooks = [
+    {
+      id: '1',
+      title: '52 Essential JavaScript Frontend Interview Questions',
+      meta: '20 paź 2025 · 6 źródeł',
+      bgClass: 'from-zinc-800/80 to-zinc-700/50',
+    },
+    {
+      id: '2',
+      title: 'React Server Components',
+      meta: '8 kwi 2026 · 18 źródeł',
+      bgClass: 'from-violet-900/40 to-zinc-800/80',
+    },
+    {
+      id: '3',
+      title: 'The Singleton Design Pattern Explained',
+      meta: '31 paź 2025 · 7 źródeł',
+      bgClass: 'from-emerald-900/35 to-zinc-800/80',
+    },
+  ]
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-8 px-4 py-10">
-      <header className="space-y-3">
-        <div className="inline-flex rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
-          Lerni · Notebook Workspace
-        </div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Moje notatniki</h1>
+      <header className="space-y-2">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          Moje notatniki
+        </h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          Dark UI inspirowane NotebookLM. Spójny zestaw reużywalnych komponentów do formularzy i akcji.
+          Wybierz notatnik, aby przejść do jego widoku roboczego.
         </p>
       </header>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-medium">Dodaj źródło artykułu</CardTitle>
-          <CardDescription>Wklej link do artykułu i dodaj go do notatnika.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="source-url">Adres URL</Label>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Input
-                id="source-url"
-                placeholder="https://example.com/artykul"
-                value={sourceUrl}
-                onChange={(event) => setSourceUrl(event.target.value)}
-              />
-              <Button onClick={addSource}>Dodaj</Button>
-              <Button variant="secondary" onClick={clearSources}>
-                Wyczyść
-              </Button>
-              <Button variant="ghost">Ustawienia</Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-medium text-foreground/95">Źródła ({sources.length})</h2>
+      <section className="space-y-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sources.length === 0 ? (
-            <Card className="col-span-full border-dashed bg-card/60">
-              <CardContent className="flex min-h-[180px] items-center justify-center p-5 text-sm text-muted-foreground">
-                Brak źródeł. Dodaj pierwszy link, aby rozpocząć budowę notatnika.
-              </CardContent>
-            </Card>
-          ) : (
-            sources.map((source) => (
+          <Card className="border-dashed bg-card/40 transition-colors hover:bg-card/60">
+            <CardContent className="flex min-h-[180px] flex-col items-center justify-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
+                <Plus className="h-5 w-5" />
+              </div>
+              <p className="text-sm font-medium text-foreground">Utwórz nowy notatnik</p>
+            </CardContent>
+          </Card>
+
+          {notebooks.map((notebook) => (
+            <Link key={notebook.id} to={`/notebook/${notebook.id}`} className="group">
               <Card
-                key={source.id}
-                className="group border-border/80 bg-card/70 transition-colors hover:bg-card"
+                className={`border-border/70 bg-linear-to-br ${notebook.bgClass} transition-transform duration-200 group-hover:-translate-y-0.5`}
               >
-                <CardContent className="p-4">
-                  <p className="break-all text-sm leading-6 text-card-foreground">{source.url}</p>
-                  <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Nowe źródło</span>
-                    <Button size="sm" variant="ghost" className="h-8 px-2 text-xs">
-                      Otwórz
-                    </Button>
-                  </div>
+                <CardContent className="flex min-h-[180px] flex-col justify-end p-5">
+                  <h2 className="line-clamp-2 text-xl font-medium text-foreground">{notebook.title}</h2>
+                  <p className="mt-2 text-sm text-muted-foreground">{notebook.meta}</p>
                 </CardContent>
               </Card>
-            ))
-          )}
+            </Link>
+          ))}
         </div>
       </section>
-
-      <Card className="bg-card/70 shadow-none">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Komponenty UI
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-3">
-          <Button>Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button size="sm">Small</Button>
-          <Button size="lg">Large</Button>
-          <Button size="icon" aria-label="Przycisk ikonowy">
-            +
-          </Button>
-        </CardContent>
-      </Card>
     </main>
   )
 }
