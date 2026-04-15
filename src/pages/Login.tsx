@@ -26,56 +26,55 @@ export default function Login() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-10">
-      <Card>
-        <CardHeader>
-          <CardTitle>{isRegisterMode ? "Rejestracja" : "Logowanie"}</CardTitle>
-          <CardDescription>
-            {isRegisterMode
-              ? "Załóż konto, aby rozpocząć pracę."
-              : "Zaloguj się, aby kontynuować."}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-2">
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="twoj@email.com"
-                required
-              />
-            </Field>
+      <header className="space-y-2 mb-8">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          {isRegisterMode ? "Rejestracja" : "Logowanie"}
+        </h1>
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+          {isRegisterMode
+            ? "Załóż konto, aby rozpocząć pracę."
+            : "Zaloguj się, aby kontynuować."}
+        </p>
+      </header>
 
-            <Field>
-              <FieldLabel htmlFor="password">Hasło</FieldLabel>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="••••••••"
-                required
-              />
-            </Field>
+      <form onSubmit={handleSubmit} className="space-y-2">
+        <Field>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="twoj@email.com"
+            required
+          />
+        </Field>
 
-            <Button type="submit" className="mt-4 w-full">
-              {isRegisterMode ? "Zarejestruj się" : "Zaloguj się"}
-            </Button>
-          </form>
+        <Field>
+          <FieldLabel htmlFor="password">Hasło</FieldLabel>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="••••••••"
+            required
+          />
+        </Field>
 
-          <Button
-            type="button"
-            variant="ghost"
-            className="mt-2 w-full"
-            onClick={toggleAuthMode}
-          >
-            zarejestruj się
-          </Button>
-        </CardContent>
-      </Card>
+        <Button type="submit" className="mt-4 w-full">
+          {isRegisterMode ? "Register" : "Log In"}
+        </Button>
+      </form>
+
+      <Button
+        type="button"
+        variant="ghost"
+        className="mt-4 w-full"
+        onClick={toggleAuthMode}
+      >
+        {isRegisterMode ? "Create new account" : "Already have an account?"}
+      </Button>
     </main>
   );
 }

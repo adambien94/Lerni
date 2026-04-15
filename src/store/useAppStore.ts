@@ -3,6 +3,7 @@ import { create } from 'zustand'
 type Source = {
   id: string
   url: string
+  checked: boolean
 }
 
 type AppState = {
@@ -11,6 +12,7 @@ type AppState = {
   setSourceUrl: (value: string) => void
   addSource: () => void
   clearSources: () => void
+  toggleSource: (id: string) => void
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -23,8 +25,14 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     set((state) => ({
       sourceUrl: '',
-      sources: [{ id: crypto.randomUUID(), url }, ...state.sources],
+      sources: [{ id: crypto.randomUUID(), url, checked: true }, ...state.sources],
     }))
   },
   clearSources: () => set({ sources: [] }),
+  toggleSource: (id) =>
+    set((state) => ({
+      sources: state.sources.map((source) =>
+        source.id === id ? { ...source, checked: !source.checked } : source,
+      ),
+    })),
 }))

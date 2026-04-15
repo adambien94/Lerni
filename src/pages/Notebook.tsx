@@ -1,90 +1,49 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useAppStore } from '@/store/useAppStore'
+import { SourcesSection } from '@/components/notebook/SourcesSection'
+import { StudioSection } from '@/components/notebook/StudioSection'
+import { SummarySection } from '@/components/notebook/SummarySection'
 
 export default function Notebook() {
   const { id } = useParams<{ id: string }>()
-  const { sourceUrl, setSourceUrl, addSource, clearSources, sources } = useAppStore()
+  const [sourcesCollapsed, setSourcesCollapsed] = useState(false)
+  const [studioCollapsed, setStudioCollapsed] = useState(false)
+
+  const desktopGridClass = sourcesCollapsed
+    ? studioCollapsed
+      ? 'xl:grid-cols-[72px_minmax(0,1fr)_72px]'
+      : 'xl:grid-cols-[72px_minmax(0,1fr)_260px]'
+    : studioCollapsed
+      ? 'xl:grid-cols-[320px_minmax(0,1fr)_72px]'
+      : 'xl:grid-cols-[320px_minmax(0,1fr)_260px]'
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-8 px-4 py-10">
-      <header className="space-y-3">
-        <div className="inline-flex rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
-          Notatnik #{id}
-        </div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Widok notatnika
-        </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          W tym miejscu możesz dodawać i zarządzać źródłami.
-        </p>
-        <Button asChild variant="ghost" className="px-0 text-sm">
-          <Link to="/">← Wróć do listy notatników</Link>
-        </Button>
-      </header>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-medium">Dodaj źródło artykułu</CardTitle>
-          <CardDescription>Wklej link do artykułu i dodaj go do notatnika.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="source-url">Adres URL</Label>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Input
-                id="source-url"
-                placeholder="https://example.com/artykul"
-                value={sourceUrl}
-                onChange={(event) => setSourceUrl(event.target.value)}
-              />
-              <Button onClick={addSource}>Dodaj</Button>
-              <Button variant="secondary" onClick={clearSources}>
-                Wyczyść
-              </Button>
-              <Button variant="ghost">Ustawienia</Button>
-            </div>
+    <main className="mx-auto flex min-h-screen w-full max-w-[1380px] flex-col px-4 py-8">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="space-y-2">
+          <div className="inline-flex rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
+            Notatnik #{id}
           </div>
-        </CardContent>
-      </Card>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-medium text-foreground/95">Źródła ({sources.length})</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sources.length === 0 ? (
-            <Card className="col-span-full border-dashed bg-card/60">
-              <CardContent className="flex min-h-[180px] items-center justify-center p-5 text-sm text-muted-foreground">
-                Brak źródeł. Dodaj pierwszy link, aby rozpocząć budowę notatnika.
-              </CardContent>
-            </Card>
-          ) : (
-            sources.map((source) => (
-              <Card
-                key={source.id}
-                className="group border-border/80 bg-card/70 transition-colors hover:bg-card"
-              >
-                <CardContent className="p-4">
-                  <p className="break-all text-sm leading-6 text-card-foreground">{source.url}</p>
-                  <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Nowe źródło</span>
-                    <Button size="sm" variant="ghost" className="h-8 px-2 text-xs">
-                      Otwórz
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Widok roboczy notatnika</h1>
         </div>
+        <Link to="/">
+          <Button variant="ghost" className="text-sm">
+            ← Wróć do listy notatników
+          </Button>
+        </Link>
+      </div>
+
+      <section className={`grid flex-1 grid-cols-1 gap-4 ${desktopGridClass}`}>
+        <SourcesSection
+          collapsed={sourcesCollapsed}
+          onToggleCollapse={() => setSourcesCollapsed((current) => !current)}
+        />
+        <SummarySection />
+        <StudioSection
+          collapsed={studioCollapsed}
+          onToggleCollapse={() => setStudioCollapsed((current) => !current)}
+        />
       </section>
     </main>
   )
