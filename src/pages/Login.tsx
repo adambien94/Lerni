@@ -28,7 +28,7 @@ Start today: read less, understand more.`;
       if (index >= introListContent.length) {
         window.clearInterval(typingInterval);
       }
-    }, 13);
+    }, 14);
 
     return () => window.clearInterval(typingInterval);
   }, [introListContent]);
@@ -43,61 +43,8 @@ Start today: read less, understand more.`;
 
   return (
     <main className="mx-auto grid min-h-screen w-full max-w-xl gap-8 px-4 py-10 md:grid-cols-1 md:items-center">
-      {/* <section className="mx-auto w-full max-w-md">
-        <header className="mb-8 space-y-2">
-          <h1 className="flex gap-4 text-3xl font-black tracking-tight text-foreground sm:text-4xl">
-            <NotebookIcon className="h-10 w-10" />
-            Lerni
-          </h1>
-          <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-            {isRegisterMode
-              ? "Załóż konto, aby rozpocząć pracę."
-              : "Zaloguj się, aby kontynuować."}
-          </p>
-        </header>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="twoj@email.com"
-              required
-            />
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="password">Hasło</FieldLabel>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="••••••••"
-              required
-            />
-          </Field>
-
-          <Button type="submit" className="mt-4 w-full">
-            {isRegisterMode ? "Register" : "Log In"}
-          </Button>
-        </form>
-
-        <Button
-          type="button"
-          variant="ghost"
-          className="mt-4 w-full"
-          onClick={toggleAuthMode}
-        >
-          {isRegisterMode ? "Create new account" : "Already have an account?"}
-        </Button>
-      </section> */}
-
-      <aside className="relative overflow-hidden rounded-2xl p-4 sm:p-6 border border-slate-700/50 bg-slate-900/20 text-slate-200 shadow-xl md:p-8">
-        <div className="relative mx-auto mb-8 flex w-fit items-center justify-center">
+      <aside className="relative overflow-hidden rounded-2xl p-0 sm:p-6  text-slate-200 md:p-8">
+        <div className="relative mx-auto mb-8 flex w-fit items-center justify-center grayscale-50">
           <div className="relative h-28 w-28 rounded-2xl border-2 border-slate-600 bg-linear-to-br from-fuchsia-400/80 via-sky-400/80 to-emerald-400/80 p-3 shadow-lg shadow-slate-950/40">
             <div className="absolute left-1/2 top-0 h-3 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-300" />
             <div className="absolute -left-2 top-4 h-3 w-3 rounded-full bg-amber-300" />

@@ -8,6 +8,7 @@
   --color-popover: hsl(230 23% 14%);
   --color-popover-foreground: hsl(210 25% 95%);
   --color-primary: hsl(227 75% 62%);
+  /* --color-primary: hsl(246.99deg 91.7% 59.55%); */
   --color-primary-foreground: hsl(0 0% 100%);
   --color-secondary: hsl(230 18% 20%);
   --color-secondary-foreground: hsl(210 18% 92%);
@@ -23,6 +24,65 @@
   --radius: 0.5rem;
 }
 
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modal-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-panel-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+
+@layer utilities {
+  .animate-modal-backdrop-in {
+    animation: modal-backdrop-in 0.22s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  }
+
+  .animate-modal-panel-in {
+    animation: modal-panel-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 40ms forwards;
+    opacity: 0;
+  }
+
+  .animate-modal-backdrop-out {
+    animation: modal-backdrop-out 0.13s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  .animate-modal-panel-out {
+    animation: modal-panel-out 0.1s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -30,6 +90,16 @@
 
   body {
     @apply bg-background text-foreground min-h-screen antialiased;
-    background-image: radial-gradient(circle at 20% 0%, hsl(232 38% 15%) 0%, hsl(225 30% 8%) 45%);
+    /* background-image: radial-gradient(
+      circle at 20% 0%,
+      hsl(232 38% 15%) 0%,
+      hsl(225 30% 8%) 45%
+    ); */
+    /* background-color: hsl(225 30% 8%); */
+    /* background-image: radial-gradient(
+      circle at 20% 0%,
+      hsl(232 18% 13%) 0%,
+      hsl(225 30% 8%) 45%
+    ); */
   }
 }

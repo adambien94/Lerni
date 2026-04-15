@@ -1,13 +1,21 @@
 import { NotebookIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { CreateNotebookModal } from "@/components/notebook/CreateNotebookModal";
 import { Button } from "@/components/ui/button";
 import { SourcesSection } from "@/components/notebook/SourcesSection";
 import { StudioSection } from "@/components/notebook/StudioSection";
 import { SummarySection } from "@/components/notebook/SummarySection";
+import { useLayoutStore } from "@/stores/layoutStore";
 
 export default function Notebook() {
   const { id } = useParams<{ id: string }>();
+  const isCreateNotebookModalOpen = useLayoutStore(
+    (state) => state.isCreateNotebookModalOpen,
+  );
+  const closeCreateNotebookModal = useLayoutStore(
+    (state) => state.closeCreateNotebookModal,
+  );
   const [sourcesCollapsed, setSourcesCollapsed] = useState(false);
   const [studioCollapsed, setStudioCollapsed] = useState(false);
 
@@ -20,7 +28,10 @@ export default function Notebook() {
       : "xl:grid-cols-[320px_minmax(0,1fr)_320px]";
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-[1980px] flex-col px-4 py-4">
+    <main
+      key={id}
+      className="mx-auto flex min-h-screen w-full max-w-[1980px] flex-col px-4 py-4"
+    >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-2">
           {/* <div className="inline-flex rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
@@ -49,6 +60,10 @@ export default function Notebook() {
           onToggleCollapse={() => setStudioCollapsed((current) => !current)}
         />
       </section>
+      <CreateNotebookModal
+        isOpen={isCreateNotebookModalOpen}
+        onClose={closeCreateNotebookModal}
+      />
     </main>
   );
 }

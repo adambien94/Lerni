@@ -1,16 +1,33 @@
 import { Plus } from "lucide-react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLayoutStore } from "@/stores/layoutStore";
 
 function App() {
   const navigate = useNavigate();
+  const openCreateNotebookModal = useLayoutStore(
+    (state) => state.openCreateNotebookModal,
+  );
+  const closeCreateNotebookModal = useLayoutStore(
+    (state) => state.closeCreateNotebookModal,
+  );
+
+  useEffect(() => {
+    closeCreateNotebookModal();
+  }, [closeCreateNotebookModal]);
+
+  const goToNotebookWithCreateModal = () => {
+    openCreateNotebookModal();
+    navigate("/notebook/new");
+  };
   const notebooks = [
     {
       id: "1",
       title: "52 Essential JavaScript Frontend Interview Questions",
       meta: "20 paź 2025 · 6 źródeł",
-      bgClass: "from-zinc-800/80 to-zinc-700/50",
+      bgClass: "from-zinc-200/20 to-zinc-800/80",
     },
     {
       id: "2",
@@ -42,7 +59,7 @@ function App() {
             variant="outline"
             onClick={() => navigate("/login")}
           >
-            Wyloguj się
+            ← Wyloguj się
           </Button>
         </div>
       </header>
@@ -57,13 +74,27 @@ function App() {
         </div>
         <section className="mx-auto mt-8 w-full max-w-5xl space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Card className="border-dashed bg-card/40 transition-colors hover:bg-card/60">
+            <Card
+              className="border-dashed bg-card/40 transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/70"
+              role="button"
+              tabIndex={0}
+              onClick={goToNotebookWithCreateModal}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  goToNotebookWithCreateModal();
+                }
+              }}
+            >
               <CardContent className="flex min-h-[180px] flex-col items-center justify-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
                   <Plus className="h-5 w-5" />
                 </div>
                 <p className="text-sm font-medium text-foreground">
                   Utwórz nowy notatnik
+                </p>
+                <p className="text-center text-xs text-muted-foreground">
+                  Otwórz formularz i zacznij od tytułu notatnika.
                 </p>
               </CardContent>
             </Card>
