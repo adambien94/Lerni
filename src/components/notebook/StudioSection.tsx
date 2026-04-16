@@ -19,7 +19,7 @@ export function StudioSection({
 }: StudioSectionProps) {
   return (
     <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
-      <CardHeader className="border-b border-border/50 pb-3">
+      <CardHeader className="border-b border-border/50 pt-3 pb-1">
         <div className="flex items-start justify-center">
           <div className="w-full">
             <CardTitle className="flex items-center gap-2 text-base font-medium">

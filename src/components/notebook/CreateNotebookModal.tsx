@@ -1,4 +1,4 @@
-import { NotebookText, X } from "lucide-react";
+import { NotebookText, X, Edit } from "lucide-react";
 import { useEffect, useState, type AnimationEvent } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
@@ -94,7 +94,8 @@ export function CreateNotebookModal({
 
         <div className="relative mb-6 flex items-start justify-between gap-4">
           <div className="w-full text-center">
-            <h2 className="text-2xl text-left font-semibold tracking-tight text-foreground">
+            <h2 className="text-2xl text-left font-base tracking-tight text-foreground flex gap-4 items-center">
+              <Edit className="h-6 w-6 text-orange-100" />
               Utwórz nowy notatnik
             </h2>
           </div>

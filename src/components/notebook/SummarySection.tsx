@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export function SummarySection() {
   return (
     <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
-      <CardHeader className="border-b border-border/50 pb-5">
+      <CardHeader className="border-b border-border/50 py-3">
         <CardTitle className="flex items-center gap-2 text-base font-medium mb-0">
           <BookOpenText className="h-4 w-4 text-muted-foreground" />
           Podsumowanie
@@ -35,8 +35,8 @@ export function SummarySection() {
                 pustą linią.
               </li>
               <li>
-                <strong>Jakie znasz metody żądań HTTP?</strong> GET, HEAD,
-                POST, PUT, DELETE, CONNECT, OPTIONS, TRACE i PATCH.
+                <strong>Jakie znasz metody żądań HTTP?</strong> GET, HEAD, POST,
+                PUT, DELETE, CONNECT, OPTIONS, TRACE i PATCH.
               </li>
               <li>
                 <strong>Co robi metoda GET?</strong> Służy wyłącznie do
