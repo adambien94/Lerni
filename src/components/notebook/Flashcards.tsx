@@ -82,27 +82,63 @@ export function Flashcards() {
         </Button>
       </div>
 
-      <div className="py-4">
-        <div className="text-lg text-muted-foreground">
-          {index + 1}/{total}
-        </div>
-
-        <div className="mt-6 text-center text-xs text-muted-foreground mb-4">
-          Naciśnij spację, aby odwrócić • ← / → aby przejść
-        </div>
-
-        <button
-          type="button"
-          onClick={flip}
-          className="group relative min-h-[360px] w-full cursor-pointer select-none rounded-3xl border border-border/50 bg-background/10 px-6 py-14 text-left transition hover:bg-background/15"
-          aria-label={isFlipped ? "Pokaż pytanie" : "Pokaż odpowiedź"}
-        >
-          <div className="text-center text-2xl font-semibold tracking-tight leading-snug">
-            {isFlipped ? current.back : current.front}
+      <div className="py-4 0">
+        <div className="max-w-[590px] mx-auto">
+          <div className="mt-6 text-center text-xs text-muted-foreground mb-4">
+            Naciśnij spację, aby odwrócić • ← / → aby przejść
           </div>
-        </button>
 
-        <div className="mt-4 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={flip}
+            className="group relative  w-full cursor-pointer select-none rounded-3xl  text-left transition  focus:outline-none"
+            aria-label={isFlipped ? "Pokaż pytanie" : "Pokaż odpowiedź"}
+          >
+            {/* 3D flip container */}
+            <div
+              style={{ perspective: "1200px" }}
+              className="relative z-10 w-full min-h-[360px] "
+            >
+              <div
+                className="relative w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] transform-3d"
+                style={{
+                  transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                }}
+              >
+                {/* Front */}
+                <div className="absolute inset-0  backface-hidden">
+                  <div className="pointer-events-none absolute left-6 top-6 text-lg text-muted-foreground">
+                    {index + 1}/{total}
+                  </div>
+                  <div className="rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-zinc-800/25 border border-white/10">
+                    <div className="text-left text-2xl font-medium tracking-tight leading-snug">
+                      {current.front}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Back */}
+                <div
+                  className="absolute inset-0 backface-hidden"
+                  style={{
+                    transform: "rotateY(180deg)",
+                  }}
+                >
+                  <div className="pointer-events-none absolute left-6 top-6 text-lg text-muted-foreground">
+                    {index + 1}/{total}
+                  </div>
+                  <div className="rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-zinc-800/80">
+                    <div className="text-left text-2xl font-medium tracking-tight leading-snug">
+                      {current.back}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between max-w-[390px] mx-auto">
           <Button
             type="button"
             variant="outline"
