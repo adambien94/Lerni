@@ -81,7 +81,7 @@ export function StudioSection({
       </CardHeader>
 
       {!collapsed && (
-        <CardContent className="overflow-hidden border-b border-border/50 p-4 pb-5">
+        <CardContent className="border-b border-border/50 p-4 pb-5">
           <div
             className={`grid overflow-hidden transition-all duration-300 ease-out ${
               isFlashcardsOpen
@@ -130,13 +130,13 @@ export function StudioSection({
           </div>
 
           <div
-            className={`grid overflow-hidden transition-all duration-300 ease-out ${
+            className={`grid transition-all duration-300 ease-out ${
               isFlashcardsOpen
                 ? "mt-2 grid-rows-[1fr] opacity-100"
                 : "pointer-events-none mt-0 grid-rows-[0fr] opacity-0"
             }`}
           >
-            <div className="min-h-0 overflow-hidden">
+            <div className="min-h-0">
               <Flashcards />
             </div>
           </div>
