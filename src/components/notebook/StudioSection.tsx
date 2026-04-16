@@ -41,11 +41,11 @@ export function StudioSection({
   };
 
   return (
-    <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
-      <CardHeader className="border-b border-border/50 px-3 pt-3 pb-1">
+    <Card className="flex h-full min-h-0 flex-col">
+      <CardHeader className="px-3 pt-3 pb-1 border-b border-white/5">
         <div className="flex items-start justify-center">
           <div className="w-full">
-            <CardTitle className="flex items-center gap-2 text-base font-medium">
+            <CardTitle className="flex items-center gap-2 text-md">
               {collapsed ? (
                 ""
               ) : (
@@ -81,7 +81,7 @@ export function StudioSection({
       </CardHeader>
 
       {!collapsed && (
-        <CardContent className="border-b border-border/50 p-4 pb-5">
+        <CardContent className="p-4 pb-5">
           <div
             className={`grid overflow-hidden transition-all duration-300 ease-out ${
               isFlashcardsOpen

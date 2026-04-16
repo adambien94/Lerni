@@ -74,7 +74,7 @@ export function CreateNotebookModal({
     >
       <div
         className={cn(
-          "absolute inset-0 bg-white/3",
+          "absolute inset-0 bg-white/1 backdrop-blur-xs",
           isLeaving
             ? "animate-modal-backdrop-out"
             : "animate-modal-backdrop-in",
@@ -84,7 +84,7 @@ export function CreateNotebookModal({
       />
       <div
         className={cn(
-          "relative w-full overflow-hidden max-w-3xl rounded-3xl border-none border-white/5 bg-[#0e1014] p-6 shadow-black/60 sm:p-8",
+          "relative w-full overflow-hidden max-w-3xl rounded-3xl border-none border-white/5 bg-background p-6 shadow-black/60 sm:p-8",
           isLeaving ? "animate-modal-panel-out" : "animate-modal-panel-in",
         )}
         onAnimationEnd={handlePanelAnimationEnd}
@@ -100,7 +100,7 @@ export function CreateNotebookModal({
           <div className="relative mb-6 flex items-start justify-between gap-4">
             <div className="w-full text-center">
               <h2 className="text-2xl text-left font-base tracking-tight text-foreground flex gap-4 items-center">
-                <Edit className="h-6 w-6 text-orange-200" />
+                <Edit className="h-6 w-6" />
                 Utwórz nowy notatnik
               </h2>
             </div>
@@ -110,42 +110,34 @@ export function CreateNotebookModal({
               size="icon"
               aria-label="Zamknij modal tworzenia notatnika"
               onClick={requestClose}
-              className="-mr-2 -mt-1 text-zinc-400 hover:bg-white/10 hover:text-zinc-100"
+              className="-mr-2 -mt-1"
             >
               <X className="h-5 w-5" />
             </Button>
           </div>
 
           <form className="relative space-y-6" onSubmit={handleSubmit}>
-            <div className="rounded-3xl border border-dashed border-primary/60 bg-white/3 p-5 sm:p-6">
-              <label
-                htmlFor="notebook-title"
-                className="mb-3 flex items-center gap-3 text-zinc-300"
-              >
-                <NotebookText className="h-5 w-5 text-zinc-400" />
-                <span className="text-sm sm:text-base">
-                  Wpisz nazwę notatnika, który chcesz utworzyć
-                </span>
-              </label>
-              <Input
-                id="notebook-title"
-                name="title"
-                placeholder="np. Untitled notebook"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                required
-                autoFocus
-                className="h-12 border-white/10 bg-[#111318] text-base text-zinc-100 placeholder:text-zinc-500"
-              />
-            </div>
+            <label
+              htmlFor="notebook-title"
+              className="mb-3 flex items-center gap-3 text-zinc-300"
+            >
+              <NotebookText className="h-5 w-5 text-zinc-400" />
+              <span className="text-sm sm:text-base">
+                Wpisz nazwę notatnika, który chcesz utworzyć
+              </span>
+            </label>
+            <Input
+              id="notebook-title"
+              name="title"
+              placeholder="np. Untitled notebook"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              required
+              autoFocus
+            />
 
-            <div className="flex flex-wrap justify-end gap-3">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={requestClose}
-                className="text-zinc-300 hover:bg-white/10 hover:text-zinc-100"
-              >
+            <div className="flex flex-wrap justify-end gap-3 pt-2">
+              <Button type="button" variant="ghost" onClick={requestClose}>
                 Zamknij
               </Button>
               <Button type="submit" variant="default">

@@ -84,7 +84,7 @@ export function Flashcards() {
 
       <div className="py-8">
         <div className="max-w-[590px] mx-auto">
-          <div className="mt-6 text-center text-xs text-muted-foreground mb-4">
+          <div className="mt-6 text-center text-sm text-muted-foreground mb-6">
             Naciśnij spację, aby odwrócić • ← / → aby przejść
           </div>
 
@@ -114,7 +114,7 @@ export function Flashcards() {
                       className="pointer-events-none absolute -inset-6 rounded-3xl blur-3xl opacity-50 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.5),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(56,189,248,0.3),transparent_60%)]"
                     />
 
-                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#101217] border border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.05)]">
+                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-background border border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.05)]">
                       <div className="pointer-events-none absolute left-6 top-6 text-lg text-muted-foreground">
                         {index + 1}/{total}
                       </div>
@@ -161,7 +161,6 @@ export function Flashcards() {
             size="icon"
             onClick={goPrev}
             aria-label="Poprzednia fiszka"
-            className="text-primary"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -170,11 +169,11 @@ export function Flashcards() {
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() => {
                 setIndex(0);
                 setIsFlipped(false);
               }}
-              className="h-9"
             >
               Reset
             </Button>
@@ -186,7 +185,6 @@ export function Flashcards() {
             size="icon"
             onClick={goNext}
             aria-label="Następna fiszka"
-            className="text-primary"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

@@ -3,7 +3,6 @@ import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Bot, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -44,7 +43,7 @@ Start today: read less, understand more.`;
   return (
     <main className="mx-auto grid min-h-screen w-full max-w-xl gap-8 px-4 py-10 md:grid-cols-1 md:items-center">
       <div className="relative overflow-hidden rounded-2xl p-0 sm:p-6  text-slate-200 md:p-8">
-        <div className="text-sm sm:text-base max-w-none space-y-4 font-mono text-slate-200">
+        {/* <div className="text-sm sm:text-base max-w-none space-y-4 font-mono text-slate-200">
           <p className="font-semibold text-primary"># Welcome to Lerni</p>
           <p>Learn faster with AI-assisted notes:</p>
           <div className="relative">
@@ -58,10 +57,7 @@ Start today: read less, understand more.`;
               )}
             </pre>
           </div>
-          {/* <p>
-            <code>Start today: read less, understand more.</code>
-          </p> */}
-        </div>
+        </div> */}
         <div className="pt-10">
           <header className="mb-6 space-y-2">
             <h2 className="flex gap-4 text-3xl font-semibold tracking-tight text-foreground">
@@ -99,23 +95,29 @@ Start today: read less, understand more.`;
               />
             </Field>
 
-            <Button
-              type="submit"
-              className="mt-3 w-full"
-              onClick={() => navigate("/")}
-            >
-              {isRegisterMode ? "Register" : "Log In"}
-            </Button>
+            <div className="w-full mt-6">
+              <Button
+                type="submit"
+                onClick={() => navigate("/")}
+                className="w-full"
+              >
+                {isRegisterMode ? "Register" : "Log In"}
+              </Button>
+            </div>
           </form>
 
-          <Button
-            type="button"
-            variant="ghost"
-            className="mt-4 w-full"
-            onClick={toggleAuthMode}
-          >
-            {isRegisterMode ? "Create new account" : "Already have an account?"}
-          </Button>
+          <div className="mt-4 w-full">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={toggleAuthMode}
+              className="w-full"
+            >
+              {isRegisterMode
+                ? "Create new account"
+                : "Already have an account?"}
+            </Button>
+          </div>
         </div>
       </div>
     </main>

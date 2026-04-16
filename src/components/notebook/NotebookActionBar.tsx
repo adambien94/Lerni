@@ -44,7 +44,7 @@ export function NotebookActionBar({
             onBlur={handleSearchBlur}
             placeholder="Szukaj notatnika po nazwie"
             aria-label="Szukaj notatnika po nazwie"
-            className="h-10 pl-9"
+                className="pl-9"
           />
         </div>
       ) : (

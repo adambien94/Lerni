@@ -83,9 +83,7 @@ export default function Notebook() {
           </h1>
         </div>
         <Link to="/">
-          <Button variant="ghost" className="text-sm">
-            ← Wróć do listy notatników
-          </Button>
+            <Button variant="ghost">← Wróć do listy notatników</Button>
         </Link>
       </div>
 

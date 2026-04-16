@@ -35,13 +35,13 @@ function App() {
       id: "2",
       title: "React Server Components",
       meta: "8 kwi 2026 · 18 źródeł",
-      bgClass: "from-violet-900/40 to-zinc-800/80",
+      bgClass: "from-zinc-200/20 to-zinc-800/80",
     },
     {
       id: "3",
       title: "The Singleton Design Pattern Explained",
       meta: "31 paź 2025 · 7 źródeł",
-      bgClass: "from-emerald-900/35 to-zinc-800/80",
+      bgClass: "from-zinc-200/20 to-zinc-800/80",
     },
   ];
   const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -89,7 +89,7 @@ function App() {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Card
-              className="border-dashed bg-card/40 transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/70"
+              className="transition-all hover:-translate-y-0.5"
               role="button"
               tabIndex={0}
               onClick={goToNotebookWithCreateModal}
@@ -119,16 +119,20 @@ function App() {
                 to={`/notebook/${notebook.id}`}
                 className="group"
               >
-                <Card
-                  className={`border-border/70 bg-linear-to-br ${notebook.bgClass} transition-transform duration-200 group-hover:-translate-y-0.5`}
-                >
-                  <CardContent className="flex min-h-[190px] flex-col justify-end p-5">
-                    <h2 className="line-clamp-2 text-2xl font-base text-foreground">
-                      {notebook.title}
-                    </h2>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {notebook.meta}
-                    </p>
+                <Card className="transition-transform duration-200 group-hover:-translate-y-0.5 overflow-hidden">
+                  <CardContent className="relative flex min-h-[190px] flex-col justify-end p-5">
+                    <div
+                      aria-hidden
+                      className={`pointer-events-none absolute inset-0 bg-linear-to-br ${notebook.bgClass} opacity-40`}
+                    />
+                    <div className="relative z-10">
+                      <h2 className="line-clamp-2 text-2xl font-base text-foreground">
+                        {notebook.title}
+                      </h2>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {notebook.meta}
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
               </Link>

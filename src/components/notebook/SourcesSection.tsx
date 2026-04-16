@@ -19,11 +19,11 @@ export function SourcesSection({
     useAppStore();
 
   return (
-    <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
-      <CardHeader className="space-y-4 border-b border-border/50 px-3 pt-3 pb-1">
+    <Card className="flex h-full min-h-0 flex-col">
+      <CardHeader className="space-y-4 px-3 pt-3 pb-1 border-b border-white/5">
         <div className="flex items-start justify-center">
           <div className="w-full">
-            <CardTitle className="flex items-center gap-2 text-base font-medium">
+            <CardTitle className="flex items-center gap-2 text-md">
               {!collapsed && (
                 <FileText className="h-4 w-4 text-muted-foreground" />
               )}

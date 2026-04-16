@@ -2,28 +2,41 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-backound: hsl(225deg 15.4% 8.7%);
-  --color-background: hsl(225deg 15.4% 8.7%);
-  --color-foreground: hsl(218deg 28% 94%);
-  --color-card: hsl(230deg 18% 12.5%);
-  --color-card-foreground: hsl(218deg 28% 94%);
-  --color-popover: hsl(230deg 18% 12.5%);
-  --color-popover-foreground: hsl(218deg 28% 94%);
+  --color-background: oklch(0.145 0 0);
+  --color-foreground: oklch(0.985 0 0);
+  --color-card: oklch(0.205 0 0);
+  --color-card-foreground: oklch(0.985 0 0);
+  --color-popover: oklch(0.205 0 0);
+  --color-popover-foreground: oklch(0.985 0 0);
   --color-primary: hsl(227deg 78% 62%);
   /* --color-primary: hsl(246.99deg 91.7% 59.55%); */
   --color-primary-foreground: hsl(0 0% 100%);
-  --color-secondary: hsl(230deg 12% 15%);
-  --color-secondary-foreground: hsl(218deg 20% 85%);
-  --color-muted: hsl(230deg 12% 13.5%);
-  --color-muted-foreground: hsl(217deg 14% 70%);
-  --color-accent: hsl(232deg 16% 17.5%);
-  --color-accent-foreground: hsl(218deg 28% 94%);
+  --color-secondary: oklch(0.269 0 0);
+  --color-secondary-foreground: oklch(0.985 0 0);
+  --color-muted: oklch(0.269 0 0);
+  --color-muted-foreground: oklch(0.708 0 0);
+  --color-accent: oklch(0.269 0 0);
+  --color-accent-foreground: oklch(0.985 0 0);
   --color-destructive: hsl(0 72% 58%);
   --color-destructive-foreground: hsl(0 0% 100%);
-  --color-border: hsl(226deg 12% 18%);
-  --color-input: hsl(226deg 12% 25%);
+  --color-border: oklch(1 0 0 / 10%);
+  --color-input: oklch(1 0 0 / 15%);
   --color-ring: hsl(227deg 78% 62%);
-  --radius: 0.5rem;
+  /* Chart Color: Red (used by chart components via --color-chart-*) */
+  --color-chart-1: hsl(0deg 72% 58%);
+  --color-chart-2: hsl(10deg 80% 50%);
+  --color-chart-3: hsl(20deg 85% 55%);
+  --color-chart-4: hsl(340deg 80% 60%);
+  --color-chart-5: hsl(300deg 70% 62%);
+
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
   --font-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans",
