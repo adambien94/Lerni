@@ -1,5 +1,5 @@
-import { NotebookIcon } from "lucide-react";
-import { useState } from "react";
+import { Loader2, NotebookIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CreateNotebookModal } from "@/components/notebook/CreateNotebookModal";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,11 @@ import { StudioSection } from "@/components/notebook/StudioSection";
 import { SummarySection } from "@/components/notebook/SummarySection";
 import { useLayoutStore } from "@/stores/layoutStore";
 
+const NOTEBOOK_FAKE_LOAD_MS = 900;
+
 export default function Notebook() {
   const { id } = useParams<{ id: string }>();
+  const [isNotebookReady, setIsNotebookReady] = useState(false);
   const isCreateNotebookModalOpen = useLayoutStore(
     (state) => state.isCreateNotebookModalOpen,
   );
@@ -19,6 +22,14 @@ export default function Notebook() {
   const [sourcesCollapsed, setSourcesCollapsed] = useState(false);
   const [studioCollapsed, setStudioCollapsed] = useState(false);
 
+  useEffect(() => {
+    setIsNotebookReady(false);
+    const timeoutId = window.setTimeout(() => {
+      setIsNotebookReady(true);
+    }, NOTEBOOK_FAKE_LOAD_MS);
+    return () => window.clearTimeout(timeoutId);
+  }, [id]);
+
   const desktopGridClass = sourcesCollapsed
     ? studioCollapsed
       ? "xl:grid-cols-[72px_minmax(0,1fr)_72px]"
@@ -26,6 +37,23 @@ export default function Notebook() {
     : studioCollapsed
       ? "xl:grid-cols-[320px_minmax(0,1fr)_72px]"
       : "xl:grid-cols-[320px_minmax(0,1fr)_320px]";
+
+  if (!isNotebookReady) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-background/85 backdrop-blur-sm"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+        aria-label="Ładowanie notatnika"
+      >
+        <div className="text-center space-y-2">
+          <Loader2 className="h-10 w-10 animate-spin text-foreground mx-auto" />
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main
