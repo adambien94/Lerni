@@ -48,7 +48,7 @@ export default function Notebook() {
         aria-label="Ładowanie notatnika"
       >
         <div className="text-center space-y-2">
-          <Loader2 className="h-10 w-10 animate-spin text-foreground mx-auto" />
+          <Loader2 className="h-14 w-14 animate-spin text-foreground mx-auto" />
           <p>Loading...</p>
         </div>
       </div>

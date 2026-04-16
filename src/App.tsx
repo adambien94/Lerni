@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { NotebookActionBar } from "@/components/notebook/NotebookActionBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLayoutStore } from "@/stores/layoutStore";
@@ -22,6 +23,7 @@ function App() {
     openCreateNotebookModal();
     navigate("/notebook/new");
   };
+  const [searchQuery, setSearchQuery] = useState("");
   const notebooks = [
     {
       id: "1",
@@ -42,6 +44,12 @@ function App() {
       bgClass: "from-emerald-900/35 to-zinc-800/80",
     },
   ];
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredNotebooks = normalizedQuery
+    ? notebooks.filter((notebook) =>
+        notebook.title.toLowerCase().includes(normalizedQuery),
+      )
+    : notebooks;
 
   return (
     <>
@@ -63,7 +71,7 @@ function App() {
           </Button>
         </div>
       </header>
-      <main className="min-h-scree max-w-5xl mx-auto w-full px-4 py-6">
+      <main className="min-h-scree max-w-[1360px] mx-auto w-full px-4 py-6">
         <div className="space-y-2">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Moje notatniki
@@ -72,7 +80,13 @@ function App() {
             Wybierz notatnik, aby przejść do jego widoku roboczego.
           </p>
         </div>
-        <section className="mx-auto mt-8 w-full max-w-5xl space-y-4">
+        <section className="mx-auto mt-8 w-full max-w-[1360px] space-y-4">
+          <NotebookActionBar
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+            onCreateNotebook={goToNotebookWithCreateModal}
+          />
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Card
               className="border-dashed bg-card/40 transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/70"
@@ -86,7 +100,7 @@ function App() {
                 }
               }}
             >
-              <CardContent className="flex min-h-[180px] flex-col items-center justify-center gap-3">
+              <CardContent className="flex min-h-[190px] flex-col items-center justify-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
                   <Plus className="h-5 w-5" />
                 </div>
@@ -99,7 +113,7 @@ function App() {
               </CardContent>
             </Card>
 
-            {notebooks.map((notebook) => (
+            {filteredNotebooks.map((notebook) => (
               <Link
                 key={notebook.id}
                 to={`/notebook/${notebook.id}`}
@@ -108,8 +122,8 @@ function App() {
                 <Card
                   className={`border-border/70 bg-linear-to-br ${notebook.bgClass} transition-transform duration-200 group-hover:-translate-y-0.5`}
                 >
-                  <CardContent className="flex min-h-[180px] flex-col justify-end p-5">
-                    <h2 className="line-clamp-2 text-xl font-medium text-foreground">
+                  <CardContent className="flex min-h-[190px] flex-col justify-end p-5">
+                    <h2 className="line-clamp-2 text-2xl font-base text-foreground">
                       {notebook.title}
                     </h2>
                     <p className="mt-2 text-sm text-muted-foreground">
@@ -120,6 +134,11 @@ function App() {
               </Link>
             ))}
           </div>
+          {filteredNotebooks.length === 0 && (
+            <p className="rounded-xl border border-dashed border-border/70 bg-background/30 px-4 py-6 text-center text-sm text-muted-foreground">
+              Brak notatnikow pasujacych do frazy "{searchQuery}".
+            </p>
+          )}
         </section>
       </main>
     </>

@@ -1,26 +1,27 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: hsl(225 30% 8%);
-  --color-foreground: hsl(210 25% 95%);
-  --color-card: hsl(230 23% 14%);
-  --color-card-foreground: hsl(210 25% 95%);
-  --color-popover: hsl(230 23% 14%);
-  --color-popover-foreground: hsl(210 25% 95%);
-  --color-primary: hsl(227 75% 62%);
+  --color-backound: hsl(225deg 15.4% 8.7%);
+  --color-background: hsl(225deg 15.4% 8.7%);
+  --color-foreground: hsl(218deg 28% 94%);
+  --color-card: hsl(230deg 18% 12.5%);
+  --color-card-foreground: hsl(218deg 28% 94%);
+  --color-popover: hsl(230deg 18% 12.5%);
+  --color-popover-foreground: hsl(218deg 28% 94%);
+  --color-primary: hsl(227deg 78% 62%);
   /* --color-primary: hsl(246.99deg 91.7% 59.55%); */
   --color-primary-foreground: hsl(0 0% 100%);
-  --color-secondary: hsl(230 18% 20%);
-  --color-secondary-foreground: hsl(210 18% 92%);
-  --color-muted: hsl(230 18% 18%);
-  --color-muted-foreground: hsl(217 14% 68%);
-  --color-accent: hsl(232 20% 22%);
-  --color-accent-foreground: hsl(210 25% 95%);
+  --color-secondary: hsl(230deg 12% 15%);
+  --color-secondary-foreground: hsl(218deg 20% 85%);
+  --color-muted: hsl(230deg 12% 13.5%);
+  --color-muted-foreground: hsl(217deg 14% 70%);
+  --color-accent: hsl(232deg 16% 17.5%);
+  --color-accent-foreground: hsl(218deg 28% 94%);
   --color-destructive: hsl(0 72% 58%);
   --color-destructive-foreground: hsl(0 0% 100%);
-  --color-border: hsl(228 17% 25%);
-  --color-input: hsl(228 17% 25%);
-  --color-ring: hsl(227 75% 62%);
+  --color-border: hsl(226deg 12% 18%);
+  --color-input: hsl(226deg 12% 25%);
+  --color-ring: hsl(227deg 78% 62%);
   --radius: 0.5rem;
 }
 
@@ -92,14 +93,14 @@
     @apply bg-background text-foreground min-h-screen antialiased;
     /* background-image: radial-gradient(
       circle at 20% 0%,
-      hsl(232 38% 15%) 0%,
-      hsl(225 30% 8%) 45%
+      hsl(232deg 30% 14%) 0%,
+      hsl(225deg 15.4% 8.7%) 45%
     ); */
-    /* background-color: hsl(225 30% 8%); */
+    /* background-color: hsl(225deg 15.4% 8.7%); */
     /* background-image: radial-gradient(
       circle at 20% 0%,
-      hsl(232 18% 13%) 0%,
-      hsl(225 30% 8%) 45%
+      hsl(232deg 18% 12.5%) 0%,
+      hsl(225deg 15.4% 8.7%) 45%
     ); */
   }
 }
