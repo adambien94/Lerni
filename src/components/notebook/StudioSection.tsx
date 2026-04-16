@@ -10,30 +10,33 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Flashcards } from "@/components/notebook/Flashcards";
+import { Quiz } from "@/components/notebook/Quiz";
 
 type StudioSectionProps = {
   collapsed: boolean;
   onToggleCollapse: () => void;
-  onFlashcardsOpenChange?: (isOpen: boolean) => void;
+  /** True, gdy otwarty jest widok fiszek lub quizu (poszerzenie kolumny Studio). */
+  onStudioExpandedChange?: (expanded: boolean) => void;
 };
 
 export function StudioSection({
   collapsed,
   onToggleCollapse,
-  onFlashcardsOpenChange,
+  onStudioExpandedChange,
 }: StudioSectionProps) {
   const [activeStudioView, setActiveStudioView] = useState<
-    "menu" | "flashcards"
+    "menu" | "flashcards" | "quiz"
   >("menu");
-  const isFlashcardsOpen = activeStudioView === "flashcards";
+  const isExpandedView =
+    activeStudioView === "flashcards" || activeStudioView === "quiz";
 
-  const setStudioView = (view: "menu" | "flashcards") => {
+  const setStudioView = (view: "menu" | "flashcards" | "quiz") => {
     setActiveStudioView(view);
-    onFlashcardsOpenChange?.(view === "flashcards");
+    onStudioExpandedChange?.(view !== "menu");
   };
 
   const handleHeaderAction = () => {
-    if (isFlashcardsOpen) {
+    if (isExpandedView) {
       setStudioView("menu");
       return;
     }
@@ -53,8 +56,11 @@ export function StudioSection({
               )}
 
               {collapsed ? "" : "Studio"}
-              {!collapsed && isFlashcardsOpen ? (
+              {!collapsed && activeStudioView === "flashcards" ? (
                 <span className="text-muted-foreground">{"→ Fiszki"}</span>
+              ) : null}
+              {!collapsed && activeStudioView === "quiz" ? (
+                <span className="text-muted-foreground">{"→ Test"}</span>
               ) : null}
             </CardTitle>
           </div>
@@ -65,13 +71,13 @@ export function StudioSection({
             aria-label={
               collapsed
                 ? "Rozwiń sekcję Studio"
-                : isFlashcardsOpen
-                  ? "Zamknij fiszki"
+                : isExpandedView
+                  ? "Zamknij widok Studio"
                   : "Zwiń sekcję Studio"
             }
             className="h-8 w-8 shrink-0 translate-y-[-5px]"
           >
-            {isFlashcardsOpen ? (
+            {isExpandedView ? (
               <Minimize2 className="h-4 w-4" />
             ) : (
               <PanelRight className="h-4 w-4" />
@@ -84,7 +90,7 @@ export function StudioSection({
         <CardContent className="p-4 pb-5">
           <div
             className={`grid overflow-hidden transition-all duration-300 ease-out ${
-              isFlashcardsOpen
+              isExpandedView
                 ? "pointer-events-none grid-rows-[0fr] opacity-0"
                 : "grid-rows-[1fr] opacity-100"
             }`}
@@ -95,7 +101,7 @@ export function StudioSection({
                   type="button"
                   onClick={() => setStudioView("flashcards")}
                   className="group w-full rounded-2xl bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
-                  aria-expanded={isFlashcardsOpen}
+                  aria-expanded={activeStudioView === "flashcards"}
                 >
                   <div className="flex items-center gap-3 text-emerald-300">
                     <div>
@@ -111,7 +117,12 @@ export function StudioSection({
                   </div>
                 </button>
 
-                <button className="group w-full rounded-2xl bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]">
+                <button
+                  type="button"
+                  onClick={() => setStudioView("quiz")}
+                  className="group w-full rounded-2xl bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
+                  aria-expanded={activeStudioView === "quiz"}
+                >
                   <div className="flex items-center gap-3 text-violet-300">
                     <div>
                       <TestTube2 className="h-4 w-4" />
@@ -131,13 +142,14 @@ export function StudioSection({
 
           <div
             className={`grid transition-all duration-300 ease-out ${
-              isFlashcardsOpen
+              isExpandedView
                 ? "grid-rows-[1fr] opacity-100"
                 : "pointer-events-none mt-0 grid-rows-[0fr] opacity-0"
             }`}
           >
             <div className="min-h-0">
-              <Flashcards />
+              {activeStudioView === "flashcards" ? <Flashcards /> : null}
+              {activeStudioView === "quiz" ? <Quiz /> : null}
             </div>
           </div>
         </CardContent>

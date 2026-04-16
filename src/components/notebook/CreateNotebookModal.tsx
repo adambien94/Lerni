@@ -1,4 +1,4 @@
-import { NotebookText, X, Edit } from "lucide-react";
+import { X, Edit } from "lucide-react";
 import { useEffect, useState, type AnimationEvent } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";

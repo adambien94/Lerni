@@ -137,7 +137,7 @@ export function Flashcards() {
                     : "relative w-full transform-3d transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 }
                 style={{
-                  transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                  transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
                 }}
               >
                 {/* Front */}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -9,28 +9,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegisterMode, setIsRegisterMode] = useState(false);
-  const introListContent = `⚡️ Capture materials from different sources
-⚡️ Generate short, practical summaries
-⚡️ Build better learning habits every day
-
-Start today: read less, understand more.`;
-  const [typedIntroList, setTypedIntroList] = useState("");
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    let index = 0;
-    const typingInterval = window.setInterval(() => {
-      index += 1;
-      setTypedIntroList(introListContent.slice(0, index));
-
-      if (index >= introListContent.length) {
-        window.clearInterval(typingInterval);
-      }
-    }, 14);
-
-    return () => window.clearInterval(typingInterval);
-  }, [introListContent]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

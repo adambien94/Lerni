@@ -23,7 +23,7 @@ export default function Notebook() {
   );
   const [sourcesCollapsed, setSourcesCollapsed] = useState(false);
   const [studioCollapsed, setStudioCollapsed] = useState(false);
-  const [isStudioFlashcardsOpen, setIsStudioFlashcardsOpen] = useState(false);
+  const [isStudioExpanded, setIsStudioExpanded] = useState(false);
 
   useEffect(() => {
     if (!id) {
@@ -41,14 +41,14 @@ export default function Notebook() {
     const sourcesW = sourcesCollapsed ? "58px" : "320px";
     const studioW = studioCollapsed
       ? "58px"
-      : isStudioFlashcardsOpen
+      : isStudioExpanded
         ? "690px"
         : "320px";
     return {
       "--sourcesW": sourcesW,
       "--studioW": studioW,
     } as CSSProperties;
-  }, [isStudioFlashcardsOpen, sourcesCollapsed, studioCollapsed]);
+  }, [isStudioExpanded, sourcesCollapsed, studioCollapsed]);
 
   if (!isNotebookReady) {
     return (
@@ -99,7 +99,7 @@ export default function Notebook() {
         <StudioSection
           collapsed={studioCollapsed}
           onToggleCollapse={() => setStudioCollapsed((current) => !current)}
-          onFlashcardsOpenChange={setIsStudioFlashcardsOpen}
+          onStudioExpandedChange={setIsStudioExpanded}
         />
       </section>
       <CreateNotebookModal
