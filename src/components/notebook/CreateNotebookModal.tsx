@@ -93,14 +93,14 @@ export function CreateNotebookModal({
         {/* Colored glow halo behind the modal panel */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -inset-12 rounded-3xl blur-3xl opacity-45 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.45),transparent_40%),radial-gradient(ellipse_at_bottom,rgba(56,189,248,0.22),transparent_40%)]"
+          className="pointer-events-none absolute -inset-12 rounded-3xl blur-3xl opacity-45 "
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40" />
         <div className="relative z-10">
           <div className="relative mb-6 flex items-start justify-between gap-4">
             <div className="w-full text-center">
               <h2 className="text-2xl text-left font-base tracking-tight text-foreground flex gap-4 items-center">
-                <Edit className="h-6 w-6 text-orange-100" />
+                <Edit className="h-6 w-6 text-orange-200" />
                 Utwórz nowy notatnik
               </h2>
             </div>
