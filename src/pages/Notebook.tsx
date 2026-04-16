@@ -1,5 +1,5 @@
 import { Loader2, NotebookIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CreateNotebookModal } from "@/components/notebook/CreateNotebookModal";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,9 @@ const NOTEBOOK_FAKE_LOAD_MS = 900;
 
 export default function Notebook() {
   const { id } = useParams<{ id: string }>();
-  const [isNotebookReady, setIsNotebookReady] = useState(false);
+  const [readyForNotebookId, setReadyForNotebookId] = useState<string | null>(
+    null,
+  );
   const isCreateNotebookModalOpen = useLayoutStore(
     (state) => state.isCreateNotebookModalOpen,
   );
@@ -21,22 +23,32 @@ export default function Notebook() {
   );
   const [sourcesCollapsed, setSourcesCollapsed] = useState(false);
   const [studioCollapsed, setStudioCollapsed] = useState(false);
+  const [isStudioFlashcardsOpen, setIsStudioFlashcardsOpen] = useState(false);
 
   useEffect(() => {
-    setIsNotebookReady(false);
+    if (!id) {
+      return;
+    }
     const timeoutId = window.setTimeout(() => {
-      setIsNotebookReady(true);
+      setReadyForNotebookId(id);
     }, NOTEBOOK_FAKE_LOAD_MS);
     return () => window.clearTimeout(timeoutId);
   }, [id]);
 
-  const desktopGridClass = sourcesCollapsed
-    ? studioCollapsed
-      ? "xl:grid-cols-[72px_minmax(0,1fr)_72px]"
-      : "xl:grid-cols-[72px_minmax(0,1fr)_320px]"
-    : studioCollapsed
-      ? "xl:grid-cols-[320px_minmax(0,1fr)_72px]"
-      : "xl:grid-cols-[320px_minmax(0,1fr)_320px]";
+  const isNotebookReady = Boolean(id) && readyForNotebookId === id;
+
+  const desktopGridVars = useMemo(() => {
+    const sourcesW = sourcesCollapsed ? "58px" : "320px";
+    const studioW = studioCollapsed
+      ? "58px"
+      : isStudioFlashcardsOpen
+        ? "720px"
+        : "320px";
+    return {
+      "--sourcesW": sourcesW,
+      "--studioW": studioW,
+    } as CSSProperties;
+  }, [isStudioFlashcardsOpen, sourcesCollapsed, studioCollapsed]);
 
   if (!isNotebookReady) {
     return (
@@ -77,7 +89,10 @@ export default function Notebook() {
         </Link>
       </div>
 
-      <section className={`grid flex-1 grid-cols-1 gap-4 ${desktopGridClass}`}>
+      <section
+        style={desktopGridVars}
+        className="grid flex-1 grid-cols-1 gap-4 transition-[grid-template-columns] duration-300 ease-out xl:will-change-[grid-template-columns] xl:grid-cols-[var(--sourcesW)_minmax(0,1fr)_var(--studioW)]"
+      >
         <SourcesSection
           collapsed={sourcesCollapsed}
           onToggleCollapse={() => setSourcesCollapsed((current) => !current)}
@@ -86,6 +101,7 @@ export default function Notebook() {
         <StudioSection
           collapsed={studioCollapsed}
           onToggleCollapse={() => setStudioCollapsed((current) => !current)}
+          onFlashcardsOpenChange={setIsStudioFlashcardsOpen}
         />
       </section>
       <CreateNotebookModal

@@ -14,20 +14,27 @@ import { Flashcards } from "@/components/notebook/Flashcards";
 type StudioSectionProps = {
   collapsed: boolean;
   onToggleCollapse: () => void;
+  onFlashcardsOpenChange?: (isOpen: boolean) => void;
 };
 
 export function StudioSection({
   collapsed,
   onToggleCollapse,
+  onFlashcardsOpenChange,
 }: StudioSectionProps) {
   const [activeStudioView, setActiveStudioView] = useState<
     "menu" | "flashcards"
   >("menu");
   const isFlashcardsOpen = activeStudioView === "flashcards";
 
+  const setStudioView = (view: "menu" | "flashcards") => {
+    setActiveStudioView(view);
+    onFlashcardsOpenChange?.(view === "flashcards");
+  };
+
   const handleHeaderAction = () => {
     if (isFlashcardsOpen) {
-      setActiveStudioView("menu");
+      setStudioView("menu");
       return;
     }
     onToggleCollapse();
@@ -35,7 +42,7 @@ export function StudioSection({
 
   return (
     <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
-      <CardHeader className="border-b border-border/50 pt-3 pb-1">
+      <CardHeader className="border-b border-border/50 px-3 pt-3 pb-1">
         <div className="flex items-start justify-center">
           <div className="w-full">
             <CardTitle className="flex items-center gap-2 text-base font-medium">
@@ -86,7 +93,7 @@ export function StudioSection({
               <div className="space-y-3">
                 <button
                   type="button"
-                  onClick={() => setActiveStudioView("flashcards")}
+                  onClick={() => setStudioView("flashcards")}
                   className="group w-full rounded-2xl bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
                   aria-expanded={isFlashcardsOpen}
                 >
