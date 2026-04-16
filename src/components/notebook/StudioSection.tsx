@@ -1,12 +1,15 @@
 import {
   PanelRight,
+  Minimize2,
   FlaskConical,
   TestTube2,
   Edit,
   ChevronRight,
 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Flashcards } from "@/components/notebook/Flashcards";
 
 type StudioSectionProps = {
   collapsed: boolean;
@@ -17,6 +20,19 @@ export function StudioSection({
   collapsed,
   onToggleCollapse,
 }: StudioSectionProps) {
+  const [activeStudioView, setActiveStudioView] = useState<
+    "menu" | "flashcards"
+  >("menu");
+  const isFlashcardsOpen = activeStudioView === "flashcards";
+
+  const handleHeaderAction = () => {
+    if (isFlashcardsOpen) {
+      setActiveStudioView("menu");
+      return;
+    }
+    onToggleCollapse();
+  };
+
   return (
     <Card className="flex h-full min-h-0 flex-col border-border/80 bg-card/60">
       <CardHeader className="border-b border-border/50 pt-3 pb-1">
@@ -30,53 +46,93 @@ export function StudioSection({
               )}
 
               {collapsed ? "" : "Studio"}
+              {!collapsed && isFlashcardsOpen ? (
+                <span className="text-muted-foreground">{"→ Fiszki"}</span>
+              ) : null}
             </CardTitle>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            onClick={onToggleCollapse}
+            onClick={handleHeaderAction}
             aria-label={
-              collapsed ? "Rozwiń sekcję Studio" : "Zwiń sekcję Studio"
+              collapsed
+                ? "Rozwiń sekcję Studio"
+                : isFlashcardsOpen
+                  ? "Zamknij fiszki"
+                  : "Zwiń sekcję Studio"
             }
             className="h-8 w-8 shrink-0 translate-y-[-5px]"
           >
-            <PanelRight className="h-4 w-4" />
+            {isFlashcardsOpen ? (
+              <Minimize2 className="h-4 w-4" />
+            ) : (
+              <PanelRight className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </CardHeader>
 
       {!collapsed && (
-        <CardContent className="space-y-3 p-4 border-b border-border/50 pb-5">
-          <button className="group w-full rounded-2xl  bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]">
-            <div className="flex items-center gap-3 text-emerald-300">
-              <div>
-                <FlaskConical className="h-4 w-4" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">Fiszki</p>
-                <p className="text-xs ">Wygeneruj zestaw do nauki.</p>
-              </div>
-              <div>
-                <ChevronRight className="h-4 w-4" />
-              </div>
-            </div>
-          </button>
+        <CardContent className="overflow-hidden border-b border-border/50 p-4 pb-5">
+          <div
+            className={`grid overflow-hidden transition-all duration-300 ease-out ${
+              isFlashcardsOpen
+                ? "pointer-events-none grid-rows-[0fr] opacity-0"
+                : "grid-rows-[1fr] opacity-100"
+            }`}
+          >
+            <div className="min-h-0 overflow-hidden">
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => setActiveStudioView("flashcards")}
+                  className="group w-full rounded-2xl bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
+                  aria-expanded={isFlashcardsOpen}
+                >
+                  <div className="flex items-center gap-3 text-emerald-300">
+                    <div>
+                      <FlaskConical className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold">Fiszki</p>
+                      <p className="text-xs ">Wygeneruj zestaw do nauki.</p>
+                    </div>
+                    <div>
+                      <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </div>
+                </button>
 
-          <button className="group w-full rounded-2xl  bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]">
-            <div className="flex items-center gap-3 text-violet-300">
-              <div>
-                <TestTube2 className="h-4 w-4" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">Test</p>
-                <p className="text-xs ">Sprawdź wiedzę z podsumowania.</p>
-              </div>
-              <div>
-                <ChevronRight className="h-4 w-4" />
+                <button className="group w-full rounded-2xl bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]">
+                  <div className="flex items-center gap-3 text-violet-300">
+                    <div>
+                      <TestTube2 className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold">Test</p>
+                      <p className="text-xs ">Sprawdź wiedzę z podsumowania.</p>
+                    </div>
+                    <div>
+                      <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </div>
+                </button>
               </div>
             </div>
-          </button>
+          </div>
+
+          <div
+            className={`grid overflow-hidden transition-all duration-300 ease-out ${
+              isFlashcardsOpen
+                ? "mt-2 grid-rows-[1fr] opacity-100"
+                : "pointer-events-none mt-0 grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="min-h-0 overflow-hidden">
+              <Flashcards />
+            </div>
+          </div>
         </CardContent>
       )}
     </Card>
