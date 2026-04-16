@@ -1,10 +1,11 @@
 import {
   PanelRight,
   Minimize2,
-  FlaskConical,
-  TestTube2,
+  BadgeQuestionMark,
   Edit,
   ChevronRight,
+  MoreVertical,
+  BookCopy,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -96,16 +97,15 @@ export function StudioSection({
             }`}
           >
             <div className="min-h-0 overflow-hidden">
-              <div className="space-y-3">
+              <div className="space-y-3 border-b border-white/5 pb-4">
                 <button
                   type="button"
-                  onClick={() => setStudioView("flashcards")}
                   className="group w-full rounded-2xl bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
                   aria-expanded={activeStudioView === "flashcards"}
                 >
                   <div className="flex items-center gap-3 text-emerald-300">
                     <div>
-                      <FlaskConical className="h-4 w-4" />
+                      <BookCopy className="h-4 w-4" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-semibold">Fiszki</p>
@@ -119,13 +119,12 @@ export function StudioSection({
 
                 <button
                   type="button"
-                  onClick={() => setStudioView("quiz")}
                   className="group w-full rounded-2xl bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
                   aria-expanded={activeStudioView === "quiz"}
                 >
                   <div className="flex items-center gap-3 text-violet-300">
                     <div>
-                      <TestTube2 className="h-4 w-4" />
+                      <BadgeQuestionMark className="h-4 w-4" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-semibold">Test</p>
@@ -136,6 +135,55 @@ export function StudioSection({
                     </div>
                   </div>
                 </button>
+              </div>
+              <div className="pt-4">
+                {/* MOCKED */}
+                {[1].map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setStudioView("flashcards")}
+                    className="group w-full rounded-2xl py-4 px-3 text-left transition-brightness duration-200 cursor-pointer hover:bg-zinc-800/50"
+                    aria-expanded={activeStudioView === "quiz"}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <BookCopy className="h-5 w-5 text-emerald-100/80" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold">
+                          Fiszki ze wzorców
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          20 paź 2025 · 6 źródeł
+                        </p>
+                      </div>
+                      <MoreVertical className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </button>
+                ))}
+                {[1, 2].map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setStudioView("quiz")}
+                    className="group w-full rounded-2xl py-4 px-3 text-left transition-brightness duration-200 cursor-pointer hover:bg-zinc-800/50"
+                    aria-expanded={activeStudioView === "quiz"}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <BadgeQuestionMark className="h-5 w-5 text-violet-200/80" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold">Singletion Quiz</p>
+                        <p className="text-xs text-muted-foreground">
+                          13 list 2025 · 4 źródeł
+                        </p>
+                      </div>
+                      <MoreVertical className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           </div>

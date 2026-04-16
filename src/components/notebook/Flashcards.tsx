@@ -93,7 +93,7 @@ export function Flashcards() {
     <section>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <p className="text-lg font-semibold leading-tight">Wzorce Fiszki</p>
+          <p className="text-lg font-semibold">Wzorce Fiszki</p>
           <p className="text-xs text-muted-foreground">Na podstawie 7 źródeł</p>
         </div>
         <Button variant="ghost" size="icon" aria-label="Więcej opcji">

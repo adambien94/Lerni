@@ -29,7 +29,7 @@ export type StudioQuiz = {
 
 export const MOCK_STUDIO_QUIZ: StudioQuiz = {
   contextLabel: "Aplikacja",
-  title: "WZORCE QUIZ",
+  title: "Wzorce Quiz",
   sourceCount: 7,
   totalQuestions: 10,
   questions: [
