@@ -41,7 +41,7 @@ export function StudioSection({
   };
 
   return (
-    <Card className="flex h-full min-h-0 flex-col">
+    <Card className="flex h-full min-h-0 flex-col overflow-hidden">
       <CardHeader className="px-3 pt-3 pb-1 border-b border-white/5">
         <div className="flex items-start justify-center">
           <div className="w-full">

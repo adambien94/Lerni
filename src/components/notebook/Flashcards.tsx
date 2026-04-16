@@ -13,7 +13,8 @@ export function Flashcards() {
     () => [
       {
         id: "singleton-goal",
-        front: "Jaki jest główny cel stosowania wzorca projektowego Singleton?",
+        front:
+          "Jaki jest główny cel stosowania wzorca nie ma zabie yolo nie wiem co napisac tutaj projektowego Singleton?",
         back: "Zapewnienie jednej instancji klasy i globalnego punktu dostępu do niej.",
       },
       {
@@ -32,16 +33,34 @@ export function Flashcards() {
 
   const [index, setIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [suppressFlipTransition, setSuppressFlipTransition] = useState(false);
 
   const total = cards.length;
   const current = cards[index]!;
 
+  useEffect(() => {
+    if (!suppressFlipTransition) return;
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        setSuppressFlipTransition(false);
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [suppressFlipTransition]);
+
   const goPrev = useCallback(() => {
+    setSuppressFlipTransition(true);
     setIndex((currentIndex) => (currentIndex - 1 + total) % total);
     setIsFlipped(false);
   }, [total]);
 
   const goNext = useCallback(() => {
+    setSuppressFlipTransition(true);
     setIndex((currentIndex) => (currentIndex + 1) % total);
     setIsFlipped(false);
   }, [total]);
@@ -91,16 +110,32 @@ export function Flashcards() {
           <button
             type="button"
             onClick={flip}
-            className="group relative  w-full cursor-pointer select-none rounded-3xl  text-left transition  focus:outline-none"
+            className="group relative isolate w-full cursor-pointer select-none rounded-3xl text-left transition focus:outline-none"
             aria-label={isFlipped ? "Pokaż pytanie" : "Pokaż odpowiedź"}
           >
+            {/* Soft aurora-style glow behind the card (below flip layer) */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-[-8%] bottom-[0%] top-[18%] z-0"
+            >
+              <div className="relative mx-auto h-full max-w-[490px]">
+                <div className="absolute bottom-0 left-[-6%] h-[min(100%,380px)] w-[min(78%,340px)] rounded-full bg-[hsl(239_45%_32%/0.42)] blur-[100px]" />
+                <div className="absolute bottom-0 right-[-6%] h-[min(100%,380px)] w-[min(78%,340px)] rounded-full bg-[hsl(168_40%_28%/0.36)] blur-[100px]" />
+                <div className="absolute bottom-[8%] left-1/2 h-[min(55%,220px)] w-[min(70%,280px)] -translate-x-1/2 rounded-full bg-[hsl(210_35%_38%/0.18)] blur-[90px]" />
+              </div>
+            </div>
+
             {/* 3D flip container */}
             <div
               style={{ perspective: "1200px" }}
-              className="relative z-10 w-full min-h-[360px] "
+              className="relative z-10 w-full min-h-[360px]"
             >
               <div
-                className="relative w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] transform-3d"
+                className={
+                  suppressFlipTransition
+                    ? "relative w-full transform-3d transition-none"
+                    : "relative w-full transform-3d transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                }
                 style={{
                   transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
                 }}
@@ -108,17 +143,11 @@ export function Flashcards() {
                 {/* Front */}
                 <div className="absolute inset-0 backface-hidden">
                   <div className="relative">
-                    {/* Colored glow halo (subtle) - behind the card */}
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -inset-6 rounded-3xl blur-3xl opacity-50 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.5),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(56,189,248,0.3),transparent_60%)]"
-                    />
-
-                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-background border border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.05)]">
+                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#1E1E1F]  border border-white/10  shadow-lg">
                       <div className="pointer-events-none absolute left-6 top-6 text-lg text-muted-foreground">
                         {index + 1}/{total}
                       </div>
-                      <div className="text-left text-2xl font-medium tracking-tight leading-snug">
+                      <div className="text-left text-2xl font-medium tracking-tight leading-relaxed">
                         {current.front}
                       </div>
                     </div>
@@ -136,14 +165,8 @@ export function Flashcards() {
                     {index + 1}/{total}
                   </div>
                   <div className="relative">
-                    {/* Colored glow halo (subtle) - behind the card */}
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -inset-6 rounded-3xl blur-3xl opacity-45 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.45),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(56,189,248,0.22),transparent_60%)]"
-                    />
-
-                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#1E1E1F] border border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.35)]">
-                      <div className="text-left text-2xl font-medium tracking-tight leading-snug">
+                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#101010]  border border-white/10 shadow-lg">
+                      <div className="text-left text-2xl font-medium tracking-tight leading-relaxed">
                         {current.back}
                       </div>
                     </div>
@@ -154,7 +177,7 @@ export function Flashcards() {
           </button>
         </div>
 
-        <div className="mt-4 flex items-center justify-between max-w-[390px] mx-auto">
+        <div className="mt-4 flex items-center justify-between max-w-[230px] mx-auto">
           <Button
             type="button"
             variant="outline"
@@ -169,8 +192,8 @@ export function Flashcards() {
             <Button
               type="button"
               variant="outline"
-              size="sm"
               onClick={() => {
+                setSuppressFlipTransition(true);
                 setIndex(0);
                 setIsFlipped(false);
               }}

@@ -42,7 +42,7 @@ export default function Notebook() {
     const studioW = studioCollapsed
       ? "58px"
       : isStudioFlashcardsOpen
-        ? "720px"
+        ? "690px"
         : "320px";
     return {
       "--sourcesW": sourcesW,
@@ -77,9 +77,9 @@ export default function Notebook() {
           {/* <div className="inline-flex rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
             Notatnik #{id}
           </div> */}
-          <h1 className="text-2xl font-base tracking-tight flex gap-4">
+          <h1 className="text-xl font-base flex gap-4 items-center text-foreground">
             <NotebookIcon className="h-8 w-8" />
-            52 Essential JavaScript Frontend Interview Questions
+            The Singleton Design Pattern Explained
           </h1>
         </div>
         <Link to="/">

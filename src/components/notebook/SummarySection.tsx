@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export function SummarySection() {
   return (
     <Card className="flex h-full min-h-0 flex-col">
-      <CardHeader className="p-3 border-b">
+      <CardHeader className="p-3 border-b border-white/5">
         <CardTitle className="flex items-center gap-2 text-md">
           <BookOpenText className="h-4 w-4 text-muted-foreground" />
           Podsumowanie
@@ -14,16 +14,20 @@ export function SummarySection() {
         </CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 p-4">
-        <div className="rounded-2xl border border-border/70 bg-zinc-200/5 p-5">
+        <div className="">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3 py-1 text-xs text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" />
             Podsumowanie AI
           </div>
-          <div className="space-y-3 text-sm leading-7 text-muted-foreground">
-            <h3 className="text-sm font-semibold text-foreground">
+          <div className="space-y-3 text-md leading-7 text-muted-foreground">
+            <h1 className="text-2xl font-semibold text-foreground pt-2">
+              The Singleton Design Pattern Explained
+            </h1>
+            <span className="text-xs text-muted-foreground">7 źródeł</span>
+            <h3 className="text-md font-semibold text-foreground pt-4">
               Część 1: Podstawy Sieci i Protokoły
             </h3>
-            <ul className="list-disc space-y-2 pl-5">
+            <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
               <li>
                 <strong>Co to jest HTTP?</strong> To protokół aplikacji
                 umożliwiający przesyłanie danych, takich jak strony HTML czy

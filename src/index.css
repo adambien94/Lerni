@@ -89,7 +89,7 @@
   }
 
   .animate-modal-panel-in {
-    animation: modal-panel-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 40ms forwards;
+    animation: modal-panel-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) 40ms forwards;
     opacity: 0;
   }
 
