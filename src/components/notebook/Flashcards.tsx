@@ -142,7 +142,7 @@ export function Flashcards() {
                       className="pointer-events-none absolute -inset-6 rounded-3xl blur-3xl opacity-45 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.45),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(56,189,248,0.22),transparent_60%)]"
                     />
 
-                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-zinc-800 border border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.35)]">
+                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#1E1E1F] border border-white/10 shadow-[0_22px_70px_rgba(0,0,0,0.35)]">
                       <div className="text-left text-2xl font-medium tracking-tight leading-snug">
                         {current.back}
                       </div>

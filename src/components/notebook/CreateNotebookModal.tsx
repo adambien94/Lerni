@@ -99,7 +99,7 @@ export function CreateNotebookModal({
         <div className="relative z-10">
           <div className="relative mb-6 flex items-start justify-between gap-4">
             <div className="w-full text-center">
-              <h2 className="text-2xl text-left font-base tracking-tight text-foreground flex gap-4 items-center">
+              <h2 className="text-xl text-left font-medium tracking-tight text-foreground flex gap-4 items-center">
                 <Edit className="h-6 w-6" />
                 Utwórz nowy notatnik
               </h2>
@@ -119,10 +119,9 @@ export function CreateNotebookModal({
           <form className="relative space-y-6" onSubmit={handleSubmit}>
             <label
               htmlFor="notebook-title"
-              className="mb-3 flex items-center gap-3 text-zinc-300"
+              className="mb-3 flex items-center gap-3 text-muted-foreground"
             >
-              <NotebookText className="h-5 w-5 text-zinc-400" />
-              <span className="text-sm sm:text-base">
+              <span className="text-sm">
                 Wpisz nazwę notatnika, który chcesz utworzyć
               </span>
             </label>

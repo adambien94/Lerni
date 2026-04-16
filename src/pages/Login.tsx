@@ -47,10 +47,10 @@ Start today: read less, understand more.`;
           <p className="font-semibold text-primary"># Welcome to Lerni</p>
           <p>Learn faster with AI-assisted notes:</p>
           <div className="relative">
-            <pre className="invisible whitespace-pre-wrap leading-relaxed">
+            <pre className="invisible whitespace-pre-wrap">
               {introListContent}
             </pre>
-            <pre className="absolute inset-0 whitespace-pre-wrap leading-relaxed">
+            <pre className="absolute inset-0 whitespace-pre-wrap">
               {typedIntroList}
               {typedIntroList.length < introListContent.length && (
                 <span className="animate-pulse text-cyan-200">|</span>
@@ -58,16 +58,11 @@ Start today: read less, understand more.`;
             </pre>
           </div>
         </div> */}
-        <div className="pt-10">
-          <header className="mb-6 space-y-2">
-            <h2 className="flex gap-4 text-3xl font-semibold tracking-tight text-foreground">
-              {isRegisterMode ? "Register" : "Log In"}
+        <div className="pt-10 ">
+          <header className="mb-6 space-y-2 text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+              {isRegisterMode ? "Register" : "Log in"}
             </h2>
-            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-              {isRegisterMode
-                ? "Załóż konto, aby rozpocząć pracę."
-                : "Zaloguj się, aby kontynuować."}
-            </p>
           </header>
 
           <form onSubmit={handleSubmit} className="space-y-3">

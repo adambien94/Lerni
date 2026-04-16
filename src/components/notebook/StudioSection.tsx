@@ -132,7 +132,7 @@ export function StudioSection({
           <div
             className={`grid transition-all duration-300 ease-out ${
               isFlashcardsOpen
-                ? "mt-2 grid-rows-[1fr] opacity-100"
+                ? "grid-rows-[1fr] opacity-100"
                 : "pointer-events-none mt-0 grid-rows-[0fr] opacity-0"
             }`}
           >
