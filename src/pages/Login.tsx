@@ -39,7 +39,7 @@ export default function Login() {
         </div> */}
         <div className="pt-10 ">
           <header className="mb-6 space-y-2 text-center">
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">
               {isRegisterMode ? "Register" : "Log in"}
             </h2>
           </header>
@@ -69,7 +69,7 @@ export default function Login() {
               />
             </Field>
 
-            <div className="w-full mt-6">
+            <div className="w-full mt-10">
               <Button
                 type="submit"
                 onClick={() => navigate("/")}

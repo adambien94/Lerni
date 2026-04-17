@@ -44,7 +44,7 @@ export function NotebookActionBar({
             onBlur={handleSearchBlur}
             placeholder="Szukaj notatnika po nazwie"
             aria-label="Szukaj notatnika po nazwie"
-                className="pl-9"
+            className="pl-9"
           />
         </div>
       ) : (
@@ -58,7 +58,7 @@ export function NotebookActionBar({
           <Search className="h-4 w-4" />
         </Button>
       )}
-      <Button type="button" onClick={onCreateNotebook}>
+      <Button type="button" onClick={onCreateNotebook} variant="outline">
         <Plus className="mr-2 h-4 w-4" />
         Utwórz notatnik
       </Button>

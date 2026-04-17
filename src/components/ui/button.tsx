@@ -16,6 +16,7 @@ const buttonVariants = cva(
           "border border-border bg-card text-foreground hover:bg-accent hover:text-accent-foreground",
         ghost:
           "bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+        light: "bg-zinc-100 text-background shadow-sm hover:brightness-110",
       },
       size: {
         default: "h-11 px-4 py-2",
@@ -43,4 +44,4 @@ function Button({ className, variant, size, ...props }: ButtonProps) {
   );
 }
 
-export { Button };
+export { Button, buttonVariants };

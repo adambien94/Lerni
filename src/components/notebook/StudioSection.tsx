@@ -100,7 +100,7 @@ export function StudioSection({
               <div className="space-y-3 border-b border-white/5 pb-4">
                 <button
                   type="button"
-                  className="group w-full rounded-2xl bg-linear-to-br from-emerald-900/35 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
+                  className="group w-full rounded-2xl bg-linear-to-br from-emerald-400/15 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
                   aria-expanded={activeStudioView === "flashcards"}
                 >
                   <div className="flex items-center gap-3 text-emerald-300">
@@ -119,7 +119,7 @@ export function StudioSection({
 
                 <button
                   type="button"
-                  className="group w-full rounded-2xl bg-linear-to-br from-violet-900/40 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
+                  className="group w-full rounded-2xl bg-linear-to-br from-violet-400/15 to-zinc-800/80 p-4 text-left transition-brightness duration-200 cursor-pointer hover:brightness-[1.1]"
                   aria-expanded={activeStudioView === "quiz"}
                 >
                   <div className="flex items-center gap-3 text-violet-300">

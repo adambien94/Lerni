@@ -23,7 +23,7 @@
   --color-input: oklch(1 0 0 / 15%);
   --color-ring: hsl(227deg 78% 62%);
   /* Chart Color: Red (used by chart components via --color-chart-*) */
-  --color-chart-1: hsl(0deg 72% 58%);
+  --color-chart-1: hsl(0deg 12% 58%);
   --color-chart-2: hsl(10deg 80% 50%);
   --color-chart-3: hsl(20deg 85% 55%);
   --color-chart-4: hsl(340deg 80% 60%);

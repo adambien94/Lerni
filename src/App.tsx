@@ -29,19 +29,19 @@ function App() {
       id: "1",
       title: "52 Essential JavaScript Frontend Interview Questions",
       meta: "20 paź 2025 · 6 źródeł",
-      bgClass: "from-zinc-200/20 to-zinc-800/80",
+      bgClass: "from-zinc-400/50 to-zinc-800/80",
     },
     {
       id: "2",
       title: "React Server Components",
       meta: "8 kwi 2026 · 18 źródeł",
-      bgClass: "from-zinc-200/20 to-zinc-800/80",
+      bgClass: "from-violet-400/50 to-zinc-800/80",
     },
     {
       id: "3",
       title: "The Singleton Design Pattern Explained",
       meta: "31 paź 2025 · 7 źródeł",
-      bgClass: "from-zinc-200/20 to-zinc-800/80",
+      bgClass: "from-emerald-400/50 to-zinc-800/80",
     },
   ];
   const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -73,10 +73,10 @@ function App() {
       </header>
       <main className="min-h-scree max-w-[1360px] mx-auto w-full px-4 py-6">
         <div className="space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Moje notatniki
           </h1>
-          <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+          <p className="max-w-2xl text-sm text-muted-foreground">
             Wybierz notatnik, aby przejść do jego widoku roboczego.
           </p>
         </div>

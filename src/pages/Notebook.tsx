@@ -103,8 +103,12 @@ export default function Notebook() {
         />
       </section>
       <CreateNotebookModal
-        isOpen={isCreateNotebookModalOpen}
-        onClose={closeCreateNotebookModal}
+        open={isCreateNotebookModalOpen}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen) {
+            closeCreateNotebookModal();
+          }
+        }}
       />
     </main>
   );

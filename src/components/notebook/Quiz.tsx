@@ -124,13 +124,12 @@ export function Quiz() {
             </Button>
           </div>
         </div>
+        {hintOpen ? (
+          <p className="rounded-xl mt-5 border border-white/10 bg-zinc-950/60 px-4 py-3 text-sm text-muted-foreground">
+            {current.hint}
+          </p>
+        ) : null}
       </div>
-
-      {hintOpen ? (
-        <p className="rounded-xl mt-5 border border-white/10 bg-zinc-950/60 px-4 py-3 text-sm text-muted-foreground">
-          {current.hint}
-        </p>
-      ) : null}
     </section>
   );
 }
