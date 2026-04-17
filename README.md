@@ -72,3 +72,10 @@ export default defineConfig([
 ])
 ```
 # Lerni
+<img width="1728" height="1085" alt="Screenshot 2026-04-17 at 12 13 38" src="https://github.com/user-attachments/assets/72b174ec-5ab3-4183-aaab-82d2a5850e7c" />
+<img width="1728" height="1087" alt="Screenshot 2026-04-17 at 12 13 13" src="https://github.com/user-attachments/assets/81c98568-bdb4-4e3d-b5ed-07ee656bfa77" />
+<img width="1728" height="1085" alt="Screenshot 2026-04-17 at 12 14 00" src="https://github.com/user-attachments/assets/a8620cd8-176f-483d-849f-3db20f252911" />
+<img width="1728" height="965" alt="Screenshot 2026-04-17 at 12 14 43" src="https://github.com/user-attachments/assets/87b945f7-cb42-42d2-81ef-58c1bb60f2cb" />
+
+
+
