@@ -70,7 +70,7 @@ export default function Notebook() {
   return (
     <main
       key={id}
-      className="mx-auto flex min-h-screen w-full max-w-[1980px] flex-col px-4 py-4"
+      className="flex h-screen min-h-0 w-full flex-col overflow-hidden px-4 py-4"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-2">
@@ -89,7 +89,7 @@ export default function Notebook() {
 
       <section
         style={desktopGridVars}
-        className="grid flex-1 grid-cols-1 gap-4 transition-[grid-template-columns] duration-300 ease-out xl:will-change-[grid-template-columns] xl:grid-cols-[var(--sourcesW)_minmax(0,1fr)_var(--studioW)]"
+        className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-hidden transition-[grid-template-columns] duration-300 ease-out xl:will-change-[grid-template-columns] xl:grid-cols-[var(--sourcesW)_minmax(0,1fr)_var(--studioW)]"
       >
         <SourcesSection
           collapsed={sourcesCollapsed}

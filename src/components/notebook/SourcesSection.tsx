@@ -12,12 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { ActionDropdown } from "@/components/ui/action-dropdown";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useAppStore } from "@/store/useAppStore";
 import {
@@ -124,7 +120,7 @@ export function SourcesSection({
   };
 
   const renamedSource = renamedSourceId
-    ? sources.find((source) => source.id === renamedSourceId) ?? null
+    ? (sources.find((source) => source.id === renamedSourceId) ?? null)
     : null;
   const renameInitialValue = renamedSource
     ? renamedSource.customTitle?.trim() ||
@@ -211,8 +207,10 @@ export function SourcesSection({
                             <FileText className="h-3 w-3" />
                           </span>
                         )}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
+                        <ActionDropdown
+                          align="start"
+                          side="right"
+                          trigger={
                             <Button
                               variant="ghost"
                               size="icon"
@@ -222,23 +220,22 @@ export function SourcesSection({
                             >
                               <MoreVertical className="h-3.5 w-3.5" />
                             </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="start" side="right">
-                            <DropdownMenuItem
-                              onClick={() => openRenameDialog(source.id)}
-                            >
-                              <Pencil className="h-4 w-4" />
-                              Zmień nazwę źródła
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => openDeleteDialog(source.id)}
-                              className="text-destructive focus:text-destructive"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              Usuń źródło
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                          }
+                        >
+                          <DropdownMenuItem
+                            onClick={() => openRenameDialog(source.id)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                            Zmień nazwę źródła
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => openDeleteDialog(source.id)}
+                            className="text-destructive focus:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            Usuń źródło
+                          </DropdownMenuItem>
+                        </ActionDropdown>
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm leading-5 text-foreground/90">
