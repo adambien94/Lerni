@@ -184,8 +184,7 @@ export default function Notebook() {
         toast.success("Podsumowanie zostalo wygenerowane.");
       }
     } catch (e) {
-      const msg =
-        e instanceof Error ? e.message : "Nie udalo sie wygenerowac.";
+      const msg = e instanceof Error ? e.message : "Nie udalo sie wygenerowac.";
       setSummaryError(msg);
       toast.error(msg);
     } finally {

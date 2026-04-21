@@ -39,7 +39,7 @@ createRoot(document.getElementById("root")!).render(
             }
           />
         </Routes>
-        <Toaster richColors position="top-right" duration={3000} closeButton />
+        <Toaster position="top-right" closeButton />
       </BrowserRouter>
     </AuthProvider>
   </StrictMode>,

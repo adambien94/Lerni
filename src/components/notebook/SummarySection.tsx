@@ -61,7 +61,7 @@ export function SummarySection({
         </div>
 
         {generateError ? (
-          <p className="text-sm text-destructive" role="alert">
+          <p className="text-sm text-destructive mb-1" role="alert">
             {generateError}
           </p>
         ) : null}
@@ -82,9 +82,7 @@ export function SummarySection({
         ) : null}
 
         {summary?.contentMarkdown?.trim() ? (
-          <article
-            className="markdown-summary mt-3 space-y-3 text-sm leading-7 text-muted-foreground [&_a]:text-emerald-400/90 [&_a]:underline [&_a]:underline-offset-2 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_code]:rounded [&_code]:bg-muted/50 [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_h1]:text-2xl [&_h1]:font-semibold [&_h1]:text-foreground [&_h1]:pt-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:pt-3 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_li]:marker:text-muted-foreground/80 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:text-muted-foreground [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
-          >
+          <article className="markdown-summary mt-3 space-y-3 text-sm leading-7 text-muted-foreground [&_a]:text-emerald-400/90 [&_a]:underline [&_a]:underline-offset-2 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_code]:rounded [&_code]:bg-muted/50 [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_h1]:text-2xl [&_h1]:font-semibold [&_h1]:text-foreground [&_h1]:pt-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:pt-3 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_li]:marker:text-muted-foreground/80 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:text-muted-foreground [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
             <ReactMarkdown
               components={{
                 a: ({ href, children, ...rest }) => (
