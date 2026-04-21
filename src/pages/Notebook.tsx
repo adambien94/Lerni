@@ -180,9 +180,6 @@ export default function Notebook() {
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-2">
-          {/* <div className="inline-flex rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
-            Notatnik #{id}
-          </div> */}
           <h1 className="text-xl font-base flex gap-4 items-center text-foreground">
             <NotebookIcon className="h-8 w-8" />
             {effectiveNotebookTitle}

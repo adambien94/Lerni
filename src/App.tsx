@@ -18,7 +18,7 @@ import {
 import { supabase } from "@/lib/supabase";
 
 const NOTEBOOK_BG_CLASSES = [
-  "from-zinc-400/50 to-zinc-800/80",
+  "from-zinc-200/80 to-zinc-800/80",
   "from-violet-400/50 to-zinc-800/80",
   "from-emerald-400/50 to-zinc-800/80",
   "from-pink-400/50 to-zinc-800/80",
