@@ -1,10 +1,14 @@
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { NotebookTitleModal } from "@/components/notebook/NotebookTitleModal";
 import { NotebookActionBar } from "@/components/notebook/NotebookActionBar";
+import { NotebookLinkCard } from "@/components/notebook/NotebookLinkCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { createNotebook, listNotebooks } from "@/lib/notebooks";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { createNotebook, deleteNotebook, listNotebooks, renameNotebook } from "@/lib/notebooks";
 import { supabase } from "@/lib/supabase";
 
 const NOTEBOOK_BG_CLASSES = [
@@ -21,24 +25,47 @@ function App() {
     await supabase.auth.signOut();
     navigate("/login");
   };
+  const [isEditTitleOpen, setIsEditTitleOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [activeNotebook, setActiveNotebook] = useState<{ id: string; title: string } | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [notebooks, setNotebooks] = useState<
     Array<{ id: string; title: string; meta: string; bgClass: string }>
   >([]);
 
+  const refreshNotebooks = useCallback(async () => {
+    const items = await listNotebooks();
+    setNotebooks(
+      items.map((item, index) => ({
+        id: item.id,
+        title: item.title,
+        meta: `${new Date(item.updatedAt).toLocaleDateString()} · ${item.sourceCount} sources`,
+        bgClass: NOTEBOOK_BG_CLASSES[index % NOTEBOOK_BG_CLASSES.length]!,
+      })),
+    );
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     const loadNotebooks = async () => {
-      const items = await listNotebooks();
-      if (cancelled) return;
-      setNotebooks(
-        items.map((item, index) => ({
-          id: item.id,
-          title: item.title,
-          meta: `${new Date(item.updatedAt).toLocaleDateString()} · ${item.sourceCount} sources`,
-          bgClass: NOTEBOOK_BG_CLASSES[index % NOTEBOOK_BG_CLASSES.length]!,
-        })),
-      );
+      try {
+        const items = await listNotebooks();
+        if (cancelled) return;
+        setNotebooks(
+          items.map((item, index) => ({
+            id: item.id,
+            title: item.title,
+            meta: `${new Date(item.updatedAt).toLocaleDateString()} · ${item.sourceCount} sources`,
+            bgClass: NOTEBOOK_BG_CLASSES[index % NOTEBOOK_BG_CLASSES.length]!,
+          })),
+        );
+      } catch {
+        if (!cancelled) {
+          toast.error("Nie udalo sie zaladowac notatnikow.");
+        }
+      }
     };
     void loadNotebooks();
     return () => {
@@ -48,26 +75,52 @@ function App() {
 
   const handleCreateNotebook = async () => {
     const created = await createNotebook("Untitled notebook");
-    setNotebooks((current) => [
-      {
-        id: created.id,
-        title: created.title,
-        meta: `${new Date(created.updated_at).toLocaleDateString()} · 0 sources`,
-        bgClass:
-          NOTEBOOK_BG_CLASSES[current.length % NOTEBOOK_BG_CLASSES.length]!,
-      },
-      ...current,
-    ]);
     navigate(`/notebook/${created.id}`, {
       state: { openRenameTitleModal: true },
     });
   };
+
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  const filteredNotebooks = normalizedQuery
-    ? notebooks.filter((notebook) =>
-        notebook.title.toLowerCase().includes(normalizedQuery),
-      )
-    : notebooks;
+  const filteredNotebooks = useMemo(
+    () =>
+      normalizedQuery
+        ? notebooks.filter((notebook) =>
+            notebook.title.toLowerCase().includes(normalizedQuery),
+          )
+        : notebooks,
+    [normalizedQuery, notebooks],
+  );
+
+  const handleOpenEditTitle = (notebook: { id: string; title: string }) => {
+    setActiveNotebook(notebook);
+    setIsEditTitleOpen(true);
+  };
+
+  const handleEditTitle = async (title: string) => {
+    if (!activeNotebook) return;
+    await renameNotebook(activeNotebook.id, title);
+    await refreshNotebooks();
+    toast.success("Tytul notatnika zostal zaktualizowany.");
+  };
+
+  const handleOpenDelete = (notebook: { id: string; title: string }) => {
+    setActiveNotebook(notebook);
+    setIsDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteNotebook = async () => {
+    if (!activeNotebook) return;
+    try {
+      await deleteNotebook(activeNotebook.id);
+      await refreshNotebooks();
+      toast.success("Notatnik zostal usuniety.");
+    } catch {
+      toast.error("Nie udalo sie usunac notatnika.");
+    } finally {
+      setIsDeleteConfirmOpen(false);
+      setActiveNotebook(null);
+    }
+  };
 
   return (
     <>
@@ -132,28 +185,19 @@ function App() {
             </Card>
 
             {filteredNotebooks.map((notebook) => (
-              <Link
+              <NotebookLinkCard
                 key={notebook.id}
-                to={`/notebook/${notebook.id}`}
-                className="group"
-              >
-                <Card className="transition-transform duration-200 group-hover:-translate-y-0.5 overflow-hidden">
-                  <CardContent className="relative flex min-h-[190px] flex-col justify-end p-5">
-                    <div
-                      aria-hidden
-                      className={`pointer-events-none absolute inset-0 bg-linear-to-br ${notebook.bgClass} opacity-40`}
-                    />
-                    <div className="relative z-10">
-                      <h2 className="line-clamp-2 text-2xl font-base text-foreground">
-                        {notebook.title}
-                      </h2>
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        {notebook.meta}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                id={notebook.id}
+                title={notebook.title}
+                meta={notebook.meta}
+                bgClass={notebook.bgClass}
+                onEditTitle={() =>
+                  handleOpenEditTitle({ id: notebook.id, title: notebook.title })
+                }
+                onDelete={() =>
+                  handleOpenDelete({ id: notebook.id, title: notebook.title })
+                }
+              />
             ))}
           </div>
           {filteredNotebooks.length === 0 && searchQuery.trim() !== "" && (
@@ -163,6 +207,33 @@ function App() {
           )}
         </section>
       </main>
+      <NotebookTitleModal
+        key={activeNotebook?.id ?? "notebook-title-modal"}
+        open={isEditTitleOpen}
+        onOpenChange={(open) => {
+          setIsEditTitleOpen(open);
+          if (!open) setActiveNotebook(null);
+        }}
+        onSubmitTitle={handleEditTitle}
+        initialTitle={activeNotebook?.title ?? ""}
+        dialogTitle="Edytuj tytul notatnika"
+        dialogDescription="Zmien nazwe notatnika."
+        submitLabel="Zapisz"
+      />
+      <ConfirmDialog
+        open={isDeleteConfirmOpen}
+        onOpenChange={(open) => {
+          setIsDeleteConfirmOpen(open);
+          if (!open) setActiveNotebook(null);
+        }}
+        title="Usun notatnik?"
+        description={`Tej operacji nie mozna cofnac. Notatnik "${activeNotebook?.title ?? ""}" zostanie trwale usuniety.`}
+        confirmLabel="Usun"
+        cancelLabel="Anuluj"
+        onConfirm={() => {
+          void handleDeleteNotebook();
+        }}
+      />
     </>
   );
 }

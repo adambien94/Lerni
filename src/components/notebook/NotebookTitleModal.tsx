@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,65 +10,73 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-type RenameNotebookDialogProps = {
+type NotebookTitleModalProps = {
   open: boolean;
-  initialTitle: string;
   onOpenChange: (open: boolean) => void;
-  onSave: (title: string) => Promise<void>;
+  onSubmitTitle: (title: string) => Promise<void>;
+  initialTitle?: string;
+  dialogTitle?: string;
+  dialogDescription?: string;
+  submitLabel?: string;
 };
 
-export function RenameNotebookDialog({
+export function NotebookTitleModal({
   open,
-  initialTitle,
   onOpenChange,
-  onSave,
-}: RenameNotebookDialogProps) {
+  onSubmitTitle,
+  initialTitle = "",
+  dialogTitle = "Utworz nowy notatnik",
+  dialogDescription = "Wpisz nazwe notatnika, ktory chcesz utworzyc.",
+  submitLabel = "Zapisz",
+}: NotebookTitleModalProps) {
   const [title, setTitle] = useState(initialTitle);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (open) {
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
       setTitle(initialTitle);
       setErrorMessage(null);
     }
-  }, [initialTitle, open]);
+    onOpenChange(nextOpen);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const value = title.trim();
-    if (!value) return;
+    const sanitizedTitle = title.trim();
+    if (!sanitizedTitle) return;
+
     setErrorMessage(null);
     setIsSubmitting(true);
-    void onSave(value)
-      .then(() => onOpenChange(false))
+    void onSubmitTitle(sanitizedTitle)
+      .then(() => {
+        handleOpenChange(false);
+      })
       .catch((error: unknown) => {
         const message =
           error instanceof Error
             ? error.message
-            : "Nie udalo sie zaktualizowac tytulu notatnika.";
+            : "Nie udalo sie zapisac nazwy notatnika. Sprobuj ponownie.";
         setErrorMessage(message);
       })
       .finally(() => setIsSubmitting(false));
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Nadaj nazwę notatnikowi</DialogTitle>
-          <DialogDescription>
-            Notatnik został utworzony. Ustaw własny tytuł teraz lub później.
-          </DialogDescription>
+          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            id="notebook-rename-title"
+            id="notebook-title"
             name="title"
+            placeholder="np. Untitled notebook"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             autoFocus
-            placeholder="np. Matematyka - egzamin"
           />
           {errorMessage ? (
             <p className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -79,13 +87,13 @@ export function RenameNotebookDialog({
             <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => handleOpenChange(false)}
               disabled={isSubmitting}
             >
-              Później
+              Anuluj
             </Button>
             <Button type="submit" disabled={!title.trim() || isSubmitting}>
-              Zapisz tytuł
+              {submitLabel}
             </Button>
           </DialogFooter>
         </form>

@@ -110,6 +110,13 @@ export async function renameNotebook(notebookId: string, title: string) {
   }
 }
 
+export async function deleteNotebook(notebookId: string) {
+  const { error } = await supabase.from("notebooks").delete().eq("id", notebookId);
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function listNotebookSources(
   notebookId: string,
 ): Promise<NotebookSourceDto[]> {

@@ -2,7 +2,7 @@ import { Loader2, NotebookIcon } from "lucide-react";
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { RenameNotebookDialog } from "@/components/notebook/RenameNotebookDialog";
+import { NotebookTitleModal } from "@/components/notebook/NotebookTitleModal";
 import { Button } from "@/components/ui/button";
 import {
   addNotebookSource,
@@ -222,11 +222,14 @@ export default function Notebook() {
           onStudioExpandedChange={setIsStudioExpanded}
         />
       </section>
-      <RenameNotebookDialog
+      <NotebookTitleModal
         open={isRenameNotebookModalOpen}
-        initialTitle={effectiveNotebookTitle}
         onOpenChange={setIsRenameNotebookModalOpen}
-        onSave={handleRenameNotebook}
+        onSubmitTitle={handleRenameNotebook}
+        initialTitle={effectiveNotebookTitle}
+        dialogTitle="Nadaj nazwę notatnikowi"
+        dialogDescription="Notatnik został utworzony. Ustaw własny tytuł teraz lub później."
+        submitLabel="Zapisz tytuł"
       />
     </main>
   );
