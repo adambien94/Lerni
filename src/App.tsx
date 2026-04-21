@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { NotebookActionBar } from "@/components/notebook/NotebookActionBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { supabase } from "@/lib/supabase";
 import { useLayoutStore } from "@/stores/layoutStore";
 
 function App() {
@@ -22,6 +23,10 @@ function App() {
   const goToNotebookWithCreateModal = () => {
     openCreateNotebookModal();
     navigate("/notebook/new");
+  };
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
   };
   const [searchQuery, setSearchQuery] = useState("");
   const notebooks = [
@@ -65,7 +70,7 @@ function App() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => navigate("/login")}
+            onClick={handleLogout}
           >
             ← Wyloguj się
           </Button>

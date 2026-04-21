@@ -1,8 +1,14 @@
 import { ArrowUp, BookOpenText, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAppStore } from "@/store/useAppStore";
 
 export function SummarySection() {
+  const checkedSourcesCount = useAppStore(
+    (state) => state.sources.filter((source) => source.checked).length,
+  );
+  const sourceLabel = checkedSourcesCount === 1 ? "source" : "sources";
+
   return (
     <Card className="flex h-full min-h-0 flex-col">
       <CardHeader className="p-3 border-b border-white/5">
@@ -24,7 +30,9 @@ export function SummarySection() {
             <h1 className="text-2xl font-semibold text-foreground pt-2">
               The Singleton Design Pattern Explained
             </h1>
-            <span className="text-xs text-muted-foreground">7 źródeł</span>
+            <span className="text-xs text-muted-foreground">
+              {checkedSourcesCount} {sourceLabel}
+            </span>
             <h3 className="text-md font-semibold text-foreground pt-4">
               Część 1: Podstawy Sieci i Protokoły
             </h3>
@@ -97,7 +105,9 @@ export function SummarySection() {
             className="h-16 w-full resize-none border-0 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none"
           />
           <div className="flex items-center justify-between px-2 pb-1">
-            <span className="text-xs text-muted-foreground">7 źródeł</span>
+            <span className="text-xs text-muted-foreground">
+              {checkedSourcesCount} {sourceLabel}
+            </span>
             <Button
               type="button"
               size="icon"

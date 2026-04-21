@@ -5,15 +5,40 @@ import './index.css'
 import App from './App.tsx'
 import Login from './pages/Login.tsx'
 import Notebook from './pages/Notebook.tsx'
+import { AuthProvider } from '@/features/auth/AuthProvider'
+import { ProtectedRoute, PublicOnlyRoute } from '@/features/auth/routeGuards'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/notebook/:id" element={<Notebook />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <App />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicOnlyRoute>
+                <Login />
+              </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/notebook/:id"
+            element={
+              <ProtectedRoute>
+                <Notebook />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 )

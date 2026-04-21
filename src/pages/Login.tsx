@@ -4,40 +4,58 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [authMessage, setAuthMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setAuthError(null);
+    setAuthMessage(null);
+    setIsSubmitting(true);
+
+    if (isRegisterMode) {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        setAuthError(error.message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      setAuthMessage("Account created. You are now logged in.");
+      setIsSubmitting(false);
+      navigate("/");
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setAuthError(error.message);
+      setIsSubmitting(false);
+      return;
+    }
+
+    setIsSubmitting(false);
+    navigate("/");
   };
 
   const toggleAuthMode = () => {
     setIsRegisterMode((prevMode) => !prevMode);
+    setAuthError(null);
+    setAuthMessage(null);
   };
 
   return (
     <main className="mx-auto grid min-h-screen w-full max-w-xl gap-8 px-4 py-10 md:grid-cols-1 md:items-center">
       <div className="relative overflow-hidden rounded-2xl p-0 sm:p-6  text-slate-200 md:p-8">
-        {/* <div className="text-sm sm:text-base max-w-none space-y-4 font-mono text-slate-200">
-          <p className="font-semibold text-primary"># Welcome to Lerni</p>
-          <p>Learn faster with AI-assisted notes:</p>
-          <div className="relative">
-            <pre className="invisible whitespace-pre-wrap">
-              {introListContent}
-            </pre>
-            <pre className="absolute inset-0 whitespace-pre-wrap">
-              {typedIntroList}
-              {typedIntroList.length < introListContent.length && (
-                <span className="animate-pulse text-cyan-200">|</span>
-              )}
-            </pre>
-          </div>
-        </div> */}
-        <div className="pt-10 ">
+        <div className="bg-[#141414]  border border-border shadow-lg px-6 pb-6 pt-14 rounded-3xl">
           <header className="mb-6 space-y-2 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               {isRegisterMode ? "Register" : "Log in"}
@@ -72,13 +90,29 @@ export default function Login() {
             <div className="w-full mt-10">
               <Button
                 type="submit"
-                onClick={() => navigate("/")}
                 className="w-full"
+                disabled={isSubmitting}
               >
-                {isRegisterMode ? "Register" : "Log In"}
+                {isSubmitting
+                  ? "Please wait..."
+                  : isRegisterMode
+                    ? "Register"
+                    : "Log In"}
               </Button>
             </div>
           </form>
+
+          {authError && (
+            <p className="mt-4 rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+              {authError}
+            </p>
+          )}
+
+          {authMessage && (
+            <p className="mt-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+              {authMessage}
+            </p>
+          )}
 
           <div className="mt-4 w-full">
             <Button
@@ -86,6 +120,7 @@ export default function Login() {
               variant="ghost"
               onClick={toggleAuthMode}
               className="w-full"
+              disabled={isSubmitting}
             >
               {isRegisterMode
                 ? "Create new account"

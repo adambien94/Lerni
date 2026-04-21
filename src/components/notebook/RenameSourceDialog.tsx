@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,11 +25,12 @@ export function RenameSourceDialog({
 }: RenameSourceDialogProps) {
   const [value, setValue] = useState(initialValue);
 
-  useEffect(() => {
-    if (open) {
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen) {
       setValue(initialValue);
     }
-  }, [initialValue, open]);
+    onOpenChange(nextOpen);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,7 +41,7 @@ export function RenameSourceDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Zmień nazwę źródła</DialogTitle>
