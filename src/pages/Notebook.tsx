@@ -1,9 +1,10 @@
-import { Loader2, NotebookIcon } from "lucide-react";
+import { NotebookIcon } from "lucide-react";
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { NotebookTitleModal } from "@/components/notebook/NotebookTitleModal";
 import { Button } from "@/components/ui/button";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import {
   addNotebookSource,
   deleteNotebookSource,
@@ -165,20 +166,7 @@ export default function Notebook() {
   }, [isStudioExpanded, sourcesCollapsed, studioCollapsed]);
 
   if (!isNotebookReady) {
-    return (
-      <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-background/85 backdrop-blur-sm"
-        role="status"
-        aria-live="polite"
-        aria-busy="true"
-        aria-label="Ładowanie notatnika"
-      >
-        <div className="text-center space-y-2">
-          <Loader2 className="h-14 w-14 animate-spin text-foreground mx-auto" />
-          <p>Loading...</p>
-        </div>
-      </div>
-    );
+    return <LoadingOverlay loadingMessage="Loading..." />;
   }
 
   return (

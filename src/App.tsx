@@ -8,7 +8,13 @@ import { NotebookLinkCard } from "@/components/notebook/NotebookLinkCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { createNotebook, deleteNotebook, listNotebooks, renameNotebook } from "@/lib/notebooks";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
+import {
+  createNotebook,
+  deleteNotebook,
+  listNotebooks,
+  renameNotebook,
+} from "@/lib/notebooks";
 import { supabase } from "@/lib/supabase";
 
 const NOTEBOOK_BG_CLASSES = [
@@ -27,9 +33,11 @@ function App() {
   };
   const [isEditTitleOpen, setIsEditTitleOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [activeNotebook, setActiveNotebook] = useState<{ id: string; title: string } | null>(
-    null,
-  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeNotebook, setActiveNotebook] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [notebooks, setNotebooks] = useState<
     Array<{ id: string; title: string; meta: string; bgClass: string }>
@@ -50,6 +58,7 @@ function App() {
   useEffect(() => {
     let cancelled = false;
     const loadNotebooks = async () => {
+      setIsLoading(true);
       try {
         const items = await listNotebooks();
         if (cancelled) return;
@@ -64,6 +73,14 @@ function App() {
       } catch {
         if (!cancelled) {
           toast.error("Nie udalo sie zaladowac notatnikow.");
+        }
+      } finally {
+        if (!cancelled) {
+          requestAnimationFrame(() => {
+            if (!cancelled) {
+              setIsLoading(false);
+            }
+          });
         }
       }
     };
@@ -125,14 +142,7 @@ function App() {
   return (
     <>
       <header className="mx-auto w-full max-w-[1980px] space-y-6 p-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="relative">
-            {/* <span className="pointer-events-none absolute -inset-2 -z-10 rounded-xl bg-primary/25 blur-xl" />
-            <p className="bg-linear-to-r from-primary via-violet-400 to-cyan-300 bg-clip-text text-2xl font-black tracking-tight text-transparent sm:text-3xl">
-              Lerni
-            </p> */}
-          </div>
-
+        <div className="flex items-start justify-end gap-4">
           <Button type="button" variant="outline" onClick={handleLogout}>
             ← Wyloguj się
           </Button>
@@ -192,7 +202,10 @@ function App() {
                 meta={notebook.meta}
                 bgClass={notebook.bgClass}
                 onEditTitle={() =>
-                  handleOpenEditTitle({ id: notebook.id, title: notebook.title })
+                  handleOpenEditTitle({
+                    id: notebook.id,
+                    title: notebook.title,
+                  })
                 }
                 onDelete={() =>
                   handleOpenDelete({ id: notebook.id, title: notebook.title })
@@ -234,6 +247,7 @@ function App() {
           void handleDeleteNotebook();
         }}
       />
+      {isLoading && <LoadingOverlay loadingMessage="Loading..." />}
     </>
   );
 }

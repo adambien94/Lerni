@@ -235,7 +235,6 @@ export function SourcesSection({
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => openDeleteDialog(source.id)}
-                            className="text-destructive focus:text-destructive"
                           >
                             <Trash2 className="h-4 w-4" />
                             Usuń źródło
