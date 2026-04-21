@@ -1,15 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Toaster } from 'sonner'
-import './index.css'
-import App from './App.tsx'
-import Login from './pages/Login.tsx'
-import Notebook from './pages/Notebook.tsx'
-import { AuthProvider } from '@/features/auth/AuthProvider'
-import { ProtectedRoute, PublicOnlyRoute } from '@/features/auth/routeGuards'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
+import "./index.css";
+import App from "./App.tsx";
+import Login from "./pages/Login.tsx";
+import Notebook from "./pages/Notebook.tsx";
+import { AuthProvider } from "@/features/auth/AuthProvider";
+import { ProtectedRoute, PublicOnlyRoute } from "@/features/auth/routeGuards";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
       <BrowserRouter>
@@ -39,8 +39,8 @@ createRoot(document.getElementById('root')!).render(
             }
           />
         </Routes>
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="top-right" duration={3000} closeButton />
       </BrowserRouter>
     </AuthProvider>
   </StrictMode>,
-)
+);

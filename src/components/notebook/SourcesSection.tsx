@@ -70,14 +70,18 @@ export function SourcesSection({
     let isCancelled = false;
 
     const loadTitles = async () => {
-      const nextTitles: Record<string, string> = {};
-
-      for (const source of sources) {
-        nextTitles[source.id] = fallbackTitleFromUrl(source.url);
-      }
-
       if (!isCancelled) {
-        setSourceTitles(nextTitles);
+        setSourceTitles((currentTitles) => {
+          const nextTitles: Record<string, string> = {};
+
+          for (const source of sources) {
+            if (currentTitles[source.id]) {
+              nextTitles[source.id] = currentTitles[source.id];
+            }
+          }
+
+          return nextTitles;
+        });
       }
 
       await Promise.all(
@@ -127,10 +131,14 @@ export function SourcesSection({
   const renamedSource = renamedSourceId
     ? (sources.find((source) => source.id === renamedSourceId) ?? null)
     : null;
+
+  const getDisplayTitle = (source: NotebookSourceDto) =>
+    source.customTitle?.trim() ||
+    sourceTitles[source.id] ||
+    fallbackTitleFromUrl(source.url);
+
   const renameInitialValue = renamedSource
-    ? renamedSource.customTitle?.trim() ||
-      sourceTitles[renamedSource.id] ||
-      fallbackTitleFromUrl(renamedSource.url)
+    ? getDisplayTitle(renamedSource)
     : "";
 
   return (
@@ -243,9 +251,7 @@ export function SourcesSection({
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm leading-5 text-foreground/90">
-                          {source.customTitle?.trim() ||
-                            sourceTitles[source.id] ||
-                            fallbackTitleFromUrl(source.url)}
+                          {getDisplayTitle(source)}
                         </span>
                       </span>
                       <Checkbox

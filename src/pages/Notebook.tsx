@@ -84,7 +84,9 @@ export default function Notebook() {
   const checkedSourcesCount = effectiveSources.filter(
     (source) => source.checked,
   ).length;
-  const effectiveNotebookTitle = notebookId ? notebookTitle : "Untitled notebook";
+  const effectiveNotebookTitle = notebookId
+    ? notebookTitle
+    : "Untitled notebook";
 
   const handleAddSource = async () => {
     if (!notebookId) return;
@@ -133,7 +135,9 @@ export default function Notebook() {
     const previous = sources;
     setSources((current) =>
       current.map((source) =>
-        source.id === sourceId ? { ...source, customTitle: title.trim() } : source,
+        source.id === sourceId
+          ? { ...source, customTitle: title.trim() }
+          : source,
       ),
     );
     try {

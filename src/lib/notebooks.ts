@@ -43,13 +43,12 @@ export async function listNotebooks(): Promise<NotebookListItemDto[]> {
     throw new Error(sourceError.message);
   }
 
-  const sourceCountByNotebook = (sourceRows ?? []).reduce<Record<string, number>>(
-    (acc, row) => {
-      acc[row.notebook_id] = (acc[row.notebook_id] ?? 0) + 1;
-      return acc;
-    },
-    {},
-  );
+  const sourceCountByNotebook = (sourceRows ?? []).reduce<
+    Record<string, number>
+  >((acc, row) => {
+    acc[row.notebook_id] = (acc[row.notebook_id] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (notebookRows ?? []).map((row) => ({
     id: row.id,
@@ -111,7 +110,10 @@ export async function renameNotebook(notebookId: string, title: string) {
 }
 
 export async function deleteNotebook(notebookId: string) {
-  const { error } = await supabase.from("notebooks").delete().eq("id", notebookId);
+  const { error } = await supabase
+    .from("notebooks")
+    .delete()
+    .eq("id", notebookId);
   if (error) {
     throw new Error(error.message);
   }
@@ -122,7 +124,9 @@ export async function listNotebookSources(
 ): Promise<NotebookSourceDto[]> {
   const { data, error } = await supabase
     .from("notebook_sources")
-    .select("id, url, title, custom_title, is_selected, order_index, created_at")
+    .select(
+      "id, url, title, custom_title, is_selected, order_index, created_at",
+    )
     .eq("notebook_id", notebookId)
     .order("order_index", { ascending: true })
     .order("created_at", { ascending: true });
@@ -178,7 +182,10 @@ export async function updateNotebookSourceSelection(
   }
 }
 
-export async function renameNotebookSource(sourceId: string, customTitle: string) {
+export async function renameNotebookSource(
+  sourceId: string,
+  customTitle: string,
+) {
   const value = customTitle.trim();
   const { error } = await supabase
     .from("notebook_sources")
@@ -191,7 +198,10 @@ export async function renameNotebookSource(sourceId: string, customTitle: string
 }
 
 export async function deleteNotebookSource(sourceId: string) {
-  const { error } = await supabase.from("notebook_sources").delete().eq("id", sourceId);
+  const { error } = await supabase
+    .from("notebook_sources")
+    .delete()
+    .eq("id", sourceId);
   if (error) {
     throw new Error(error.message);
   }
