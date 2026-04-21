@@ -38,13 +38,10 @@ export function ConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
-            <Button variant="outline">{cancelLabel}</Button>
+            <Button variant="ghost">{cancelLabel}</Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button
-              onClick={onConfirm}
-              className="bg-destructive text-destructive-foreground hover:brightness-110"
-            >
+            <Button variant="outline" onClick={onConfirm}>
               {confirmLabel}
             </Button>
           </AlertDialogAction>

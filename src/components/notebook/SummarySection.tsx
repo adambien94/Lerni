@@ -1,124 +1,109 @@
-import { ArrowUp, BookOpenText, Sparkles } from "lucide-react";
+import { BookOpenText, Loader2, Sparkles } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { NotebookSummaryDto } from "@/types/notebook";
 
 type SummarySectionProps = {
   checkedSourcesCount: number;
+  summary: NotebookSummaryDto | null;
+  isGenerating: boolean;
+  generateError: string | null;
+  onGenerateSummary: () => void;
 };
 
-export function SummarySection({ checkedSourcesCount }: SummarySectionProps) {
-  const sourceLabel = checkedSourcesCount === 1 ? "source" : "sources";
+export function SummarySection({
+  checkedSourcesCount,
+  summary,
+  isGenerating,
+  generateError,
+  onGenerateSummary,
+}: SummarySectionProps) {
+  const sourceLabel = checkedSourcesCount === 1 ? "źródło" : "źródeł";
+  const canGenerate = checkedSourcesCount > 0 && !isGenerating;
 
   return (
     <Card className="flex h-full min-h-0 flex-col">
-      <CardHeader className="p-3 border-b border-white/5">
-        <CardTitle className="flex items-center gap-2 text-md">
-          <BookOpenText className="h-4 w-4 text-muted-foreground" />
-          Podsumowanie
-        </CardTitle>
-        {/* <CardDescription className="text-xs">
-          Tu będzie wyświetlane podsumowanie wybranych artykułów.
-        </CardDescription> */}
+      <CardHeader className="border-b border-white/5 p-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <CardTitle className="flex items-center gap-2 text-md">
+            <BookOpenText className="h-4 w-4 text-muted-foreground" />
+            Podsumowanie
+          </CardTitle>
+          <Button
+            type="button"
+            size="sm"
+            disabled={!canGenerate}
+            onClick={onGenerateSummary}
+            className="shrink-0 gap-1.5"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                Generowanie…
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-3.5 w-3.5" />
+                Wygeneruj (Gemini)
+              </>
+            )}
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="min-h-0 flex-1 overflow-y-auto p-4">
-        <div className="">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3 py-1 text-xs text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5" />
-            Podsumowanie AI
-          </div>
-          <div className="space-y-3 text-md leading-7 text-muted-foreground">
-            <h1 className="text-2xl font-semibold text-foreground pt-2">
-              The Singleton Design Pattern Explained
-            </h1>
-            <span className="text-xs text-muted-foreground">
-              {checkedSourcesCount} {sourceLabel}
-            </span>
-            <h3 className="text-md font-semibold text-foreground pt-4">
-              Część 1: Podstawy Sieci i Protokoły
-            </h3>
-            <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
-              <li>
-                <strong>Co to jest HTTP?</strong> To protokół aplikacji
-                umożliwiający przesyłanie danych, takich jak strony HTML czy
-                obrazy, działający w modelu klient-serwer.
-              </li>
-              <li>
-                <strong>Z czego składa się żądanie HTTP?</strong> Składa się z
-                linii startowej, nagłówków oraz ciała wiadomości oddzielonego
-                pustą linią.
-              </li>
-              <li>
-                <strong>Jakie znasz metody żądań HTTP?</strong> GET, HEAD, POST,
-                PUT, DELETE, CONNECT, OPTIONS, TRACE i PATCH.
-              </li>
-              <li>
-                <strong>Co robi metoda GET?</strong> Służy wyłącznie do
-                pobierania reprezentacji zasobu.
-              </li>
-              <li>
-                <strong>Jaka jest różnica między POST a PUT?</strong> POST
-                wysyła dane często zmieniając stan serwera, a PUT całkowicie
-                zastępuje bieżący zasób danymi żądania.
-              </li>
-              <li>
-                <strong>Czym różni się PUT od PATCH?</strong> PATCH służy do
-                częściowej modyfikacji zasobu, a PUT do jego całkowitego
-                zastąpienia.
-              </li>
-              <li>
-                <strong>Co to są Websockets?</strong> Protokół zapewniający
-                dwukierunkowy kanał komunikacji w czasie rzeczywistym przez
-                jedno połączenie TCP.
-              </li>
-              <li>
-                <strong>Czym różni się Websockets od HTTP?</strong> HTTP opiera
-                się na modelu żądanie-odpowiedź, a Websockets pozwalają na
-                przesyłanie danych przez obie strony w dowolnym momencie.
-              </li>
-              <li>
-                <strong>Co to jest REST API?</strong> Styl architektoniczny
-                definiujący zasady budowania usług internetowych w oparciu o
-                metody HTTP i adresy URL.
-              </li>
-              <li>
-                <strong>Jakie są główne zasady REST?</strong> Prostota,
-                skalowalność, bezstanowość oraz jednolity interfejs.
-              </li>
-              <li>
-                <strong>Co to jest WebRTC?</strong> Projekt open-source
-                umożliwiający komunikację audio, wideo i przesyłanie danych
-                bezpośrednio między przeglądarkami (P2P) bez wtyczek.
-              </li>
-              <li>
-                <strong>Do czego używa się WebRTC?</strong> Do wideokonferencji,
-                streamingu na żywo i narzędzi do współpracy w czasie
-                rzeczywistym.
-              </li>
-            </ul>
-          </div>
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3 py-1 text-xs text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5" />
+          Podsumowanie AI
+          <span className="text-muted-foreground/80">
+            · {checkedSourcesCount} {sourceLabel} zaznaczonych
+          </span>
         </div>
-      </CardContent>
-      <div className="border-t border-white/5 p-3">
-        <div className="rounded-2xl border border-border/70 bg-card/70 p-2">
-          <textarea
-            placeholder="Zacznij pisać..."
-            className="h-16 w-full resize-none border-0 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none"
-          />
-          <div className="flex items-center justify-between px-2 pb-1">
-            <span className="text-xs text-muted-foreground">
-              {checkedSourcesCount} {sourceLabel}
-            </span>
-            <Button
-              type="button"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-              aria-label="Wyślij wiadomość"
+
+        {generateError ? (
+          <p className="text-sm text-destructive" role="alert">
+            {generateError}
+          </p>
+        ) : null}
+
+        {!summary?.contentMarkdown?.trim() && !isGenerating ? (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Zaznacz źródła na liście po lewej, potem użyj przycisku „Wygeneruj
+            (Gemini)”. Treść stron zostanie pobrana po stronie serwera, a model
+            przygotuje streszczenie w Markdown.
+          </p>
+        ) : null}
+
+        {isGenerating && !summary?.contentMarkdown?.trim() ? (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+            Pobieranie stron i generowanie podsumowania…
+          </div>
+        ) : null}
+
+        {summary?.contentMarkdown?.trim() ? (
+          <article
+            className="markdown-summary mt-3 space-y-3 text-sm leading-7 text-muted-foreground [&_a]:text-emerald-400/90 [&_a]:underline [&_a]:underline-offset-2 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_code]:rounded [&_code]:bg-muted/50 [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_h1]:text-2xl [&_h1]:font-semibold [&_h1]:text-foreground [&_h1]:pt-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:pt-3 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_li]:marker:text-muted-foreground/80 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:text-muted-foreground [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
+          >
+            <ReactMarkdown
+              components={{
+                a: ({ href, children, ...rest }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    {...rest}
+                  >
+                    {children}
+                  </a>
+                ),
+              }}
             >
-              <ArrowUp className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+              {summary.contentMarkdown}
+            </ReactMarkdown>
+          </article>
+        ) : null}
+      </CardContent>
     </Card>
   );
 }

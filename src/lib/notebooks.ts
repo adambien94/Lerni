@@ -1,5 +1,10 @@
 import { supabase } from "@/lib/supabase";
-import type { NotebookListItemDto, NotebookSourceDto } from "@/types/notebook";
+import type {
+  GenerateNotebookSummaryResponse,
+  NotebookListItemDto,
+  NotebookSourceDto,
+  NotebookSummaryDto,
+} from "@/types/notebook";
 
 type NotebookRow = {
   id: string;
@@ -205,4 +210,53 @@ export async function deleteNotebookSource(sourceId: string) {
   if (error) {
     throw new Error(error.message);
   }
+}
+
+export async function getNotebookSummary(
+  notebookId: string,
+): Promise<NotebookSummaryDto | null> {
+  const { data, error } = await supabase
+    .from("notebook_summaries")
+    .select("content_markdown, source_count")
+    .eq("notebook_id", notebookId)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  if (!data) {
+    return null;
+  }
+  return {
+    contentMarkdown: data.content_markdown as string,
+    sourceCount: data.source_count as number,
+  };
+}
+
+export async function generateNotebookSummary(notebookId: string): Promise<{
+  summary: NotebookSummaryDto;
+  failedUrls: string[];
+}> {
+  const { data, error } = await supabase.functions.invoke<
+    GenerateNotebookSummaryResponse
+  >("generate-notebook-summary", {
+    body: { notebookId },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  if (!data || data.ok !== true) {
+    const msg =
+      data && data.ok === false ? data.error : "Generowanie nie powiodlo sie.";
+    throw new Error(msg);
+  }
+
+  return {
+    summary: {
+      contentMarkdown: data.contentMarkdown,
+      sourceCount: data.sourceCount,
+    },
+    failedUrls: data.failedUrls,
+  };
 }

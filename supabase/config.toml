@@ -1,0 +1,7 @@
+# Deploy secrets (Gemini): supabase secrets set GEMINI_API_KEY=<key> --project-ref <ref>
+# Local: supabase secrets set GEMINI_API_KEY=<key>
+
+# Gateway verify_jwt nie obsługuje tokenów ES256 (nowe JWT Signing Keys w Auth).
+# Weryfikacja sesji jest w kodzie funkcji: auth.getUser(jwt) + sprawdzenie właściciela notesu.
+[functions.generate-notebook-summary]
+verify_jwt = false

@@ -11,6 +11,16 @@ export type NotebookSummaryDto = {
   sourceCount: number;
 };
 
+/** Odpowiedz Edge Function `generate-notebook-summary` (HTTP 200). */
+export type GenerateNotebookSummaryResponse =
+  | {
+      ok: true;
+      contentMarkdown: string;
+      sourceCount: number;
+      failedUrls: string[];
+    }
+  | { ok: false; error: string };
+
 export type NotebookFlashcardDto = {
   id: string;
   front: string;

@@ -8,7 +8,9 @@ import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import {
   addNotebookSource,
   deleteNotebookSource,
+  generateNotebookSummary,
   getNotebookById,
+  getNotebookSummary,
   listNotebookSources,
   renameNotebook,
   renameNotebookSource,
@@ -17,7 +19,7 @@ import {
 import { SourcesSection } from "@/components/notebook/SourcesSection";
 import { StudioSection } from "@/components/notebook/StudioSection";
 import { SummarySection } from "@/components/notebook/SummarySection";
-import type { NotebookSourceDto } from "@/types/notebook";
+import type { NotebookSourceDto, NotebookSummaryDto } from "@/types/notebook";
 
 const NOTEBOOK_FAKE_LOAD_MS = 900;
 
@@ -36,6 +38,9 @@ export default function Notebook() {
     useState(false);
   const [sourceUrl, setSourceUrl] = useState("");
   const [sources, setSources] = useState<NotebookSourceDto[]>([]);
+  const [summary, setSummary] = useState<NotebookSummaryDto | null>(null);
+  const [summaryGenerating, setSummaryGenerating] = useState(false);
+  const [summaryError, setSummaryError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) {
@@ -55,13 +60,16 @@ export default function Notebook() {
 
     let cancelled = false;
     const loadNotebook = async () => {
-      const [notebook, notebookSources] = await Promise.all([
+      const [notebook, notebookSources, notebookSummary] = await Promise.all([
         getNotebookById(notebookId),
         listNotebookSources(notebookId),
+        getNotebookSummary(notebookId),
       ]);
       if (cancelled) return;
       setNotebookTitle(notebook?.title ?? "Notebook");
       setSources(notebookSources);
+      setSummary(notebookSummary);
+      setSummaryError(null);
     };
 
     void loadNotebook();
@@ -156,6 +164,35 @@ export default function Notebook() {
     toast.success("Tytul notatnika zostal zaktualizowany.");
   };
 
+  const handleGenerateSummary = async () => {
+    if (!notebookId) return;
+    if (checkedSourcesCount === 0) {
+      toast.error("Zaznacz co najmniej jedno zrodlo URL.");
+      return;
+    }
+    setSummaryGenerating(true);
+    setSummaryError(null);
+    try {
+      const { summary: next, failedUrls } =
+        await generateNotebookSummary(notebookId);
+      setSummary(next);
+      if (failedUrls.length > 0) {
+        toast.warning(
+          `Czesc zrodel (${failedUrls.length}) nie zostala pobrana. Podsumowanie opiera sie na pozostalych.`,
+        );
+      } else {
+        toast.success("Podsumowanie zostalo wygenerowane.");
+      }
+    } catch (e) {
+      const msg =
+        e instanceof Error ? e.message : "Nie udalo sie wygenerowac.";
+      setSummaryError(msg);
+      toast.error(msg);
+    } finally {
+      setSummaryGenerating(false);
+    }
+  };
+
   const desktopGridVars = useMemo(() => {
     const sourcesW = sourcesCollapsed ? "58px" : "320px";
     const studioW = studioCollapsed
@@ -204,7 +241,13 @@ export default function Notebook() {
           onRemoveSource={handleRemoveSource}
           onRenameSource={handleRenameSource}
         />
-        <SummarySection checkedSourcesCount={checkedSourcesCount} />
+        <SummarySection
+          checkedSourcesCount={checkedSourcesCount}
+          summary={summary}
+          isGenerating={summaryGenerating}
+          generateError={summaryError}
+          onGenerateSummary={() => void handleGenerateSummary()}
+        />
         <StudioSection
           collapsed={studioCollapsed}
           onToggleCollapse={() => setStudioCollapsed((current) => !current)}

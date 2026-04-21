@@ -86,7 +86,7 @@ export function NotebookTitleModal({
           <DialogFooter>
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               onClick={() => handleOpenChange(false)}
               disabled={isSubmitting}
             >
