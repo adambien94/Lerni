@@ -15,32 +15,37 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { useAppStore } from "@/store/useAppStore";
 import {
   buildFaviconUrl,
   fallbackTitleFromUrl,
   fetchSourceTitle,
 } from "@/lib/source-metadata";
 import { RenameSourceDialog } from "@/components/notebook/RenameSourceDialog";
+import type { NotebookSourceDto } from "@/types/notebook";
 
 type SourcesSectionProps = {
   collapsed: boolean;
   onToggleCollapse: () => void;
+  sourceUrl: string;
+  onSourceUrlChange: (value: string) => void;
+  onAddSource: () => void;
+  sources: NotebookSourceDto[];
+  onToggleSource: (id: string) => void;
+  onRemoveSource: (id: string) => void;
+  onRenameSource: (id: string, title: string) => void;
 };
 
 export function SourcesSection({
   collapsed,
   onToggleCollapse,
+  sourceUrl,
+  onSourceUrlChange,
+  onAddSource,
+  sources,
+  onToggleSource,
+  onRemoveSource,
+  onRenameSource,
 }: SourcesSectionProps) {
-  const {
-    sourceUrl,
-    setSourceUrl,
-    addSource,
-    sources,
-    toggleSource,
-    removeSource,
-    renameSource,
-  } = useAppStore();
   const [sourceTitles, setSourceTitles] = useState<Record<string, string>>({});
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [renamedSourceId, setRenamedSourceId] = useState<string | null>(null);
@@ -102,7 +107,7 @@ export function SourcesSection({
 
   const handleRenameSubmit = (nextName: string) => {
     if (!renamedSourceId) return;
-    renameSource(renamedSourceId, nextName);
+    onRenameSource(renamedSourceId, nextName);
     setRenameDialogOpen(false);
     setRenamedSourceId(null);
   };
@@ -114,7 +119,7 @@ export function SourcesSection({
 
   const handleConfirmDelete = () => {
     if (!deletedSourceId) return;
-    removeSource(deletedSourceId);
+    onRemoveSource(deletedSourceId);
     setDeleteDialogOpen(false);
     setDeletedSourceId(null);
   };
@@ -165,13 +170,13 @@ export function SourcesSection({
                   id="source-url"
                   placeholder="https://example.com/artykul"
                   value={sourceUrl}
-                  onChange={(event) => setSourceUrl(event.target.value)}
+                  onChange={(event) => onSourceUrlChange(event.target.value)}
                   onKeyDown={(event) => {
-                    if (event.key === "Enter") addSource();
+                    if (event.key === "Enter") onAddSource();
                   }}
                 />
                 <Button
-                  onClick={addSource}
+                  onClick={onAddSource}
                   aria-label="Dodaj źródło"
                   variant="outline"
                 >
@@ -246,7 +251,7 @@ export function SourcesSection({
                       </span>
                       <Checkbox
                         checked={source.checked}
-                        onCheckedChange={() => toggleSource(source.id)}
+                        onCheckedChange={() => onToggleSource(source.id)}
                       />
                     </div>
                   </li>

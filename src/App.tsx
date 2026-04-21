@@ -1,11 +1,19 @@
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { CreateNotebookModal } from "@/components/notebook/CreateNotebookModal";
 import { NotebookActionBar } from "@/components/notebook/NotebookActionBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { createNotebook, listNotebooks } from "@/lib/notebooks";
 import { supabase } from "@/lib/supabase";
 import { useLayoutStore } from "@/stores/layoutStore";
+
+const NOTEBOOK_BG_CLASSES = [
+  "from-zinc-400/50 to-zinc-800/80",
+  "from-violet-400/50 to-zinc-800/80",
+  "from-emerald-400/50 to-zinc-800/80",
+] as const;
 
 function App() {
   const navigate = useNavigate();
@@ -15,40 +23,61 @@ function App() {
   const closeCreateNotebookModal = useLayoutStore(
     (state) => state.closeCreateNotebookModal,
   );
+  const isCreateNotebookModalOpen = useLayoutStore(
+    (state) => state.isCreateNotebookModalOpen,
+  );
 
   useEffect(() => {
     closeCreateNotebookModal();
   }, [closeCreateNotebookModal]);
 
-  const goToNotebookWithCreateModal = () => {
+  const openNotebookCreateModal = () => {
     openCreateNotebookModal();
-    navigate("/notebook/new");
   };
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/login");
   };
   const [searchQuery, setSearchQuery] = useState("");
-  const notebooks = [
-    {
-      id: "1",
-      title: "52 Essential JavaScript Frontend Interview Questions",
-      meta: "20 paź 2025 · 6 źródeł",
-      bgClass: "from-zinc-400/50 to-zinc-800/80",
-    },
-    {
-      id: "2",
-      title: "React Server Components",
-      meta: "8 kwi 2026 · 18 źródeł",
-      bgClass: "from-violet-400/50 to-zinc-800/80",
-    },
-    {
-      id: "3",
-      title: "The Singleton Design Pattern Explained",
-      meta: "31 paź 2025 · 7 źródeł",
-      bgClass: "from-emerald-400/50 to-zinc-800/80",
-    },
-  ];
+  const [notebooks, setNotebooks] = useState<
+    Array<{ id: string; title: string; meta: string; bgClass: string }>
+  >([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadNotebooks = async () => {
+      const items = await listNotebooks();
+      if (cancelled) return;
+      setNotebooks(
+        items.map((item, index) => ({
+          id: item.id,
+          title: item.title,
+          meta: `${new Date(item.updatedAt).toLocaleDateString()} · ${item.sourceCount} sources`,
+          bgClass: NOTEBOOK_BG_CLASSES[index % NOTEBOOK_BG_CLASSES.length]!,
+        })),
+      );
+    };
+    void loadNotebooks();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleCreateNotebook = async (title: string) => {
+    const created = await createNotebook(title);
+    setNotebooks((current) => [
+      {
+        id: created.id,
+        title: created.title,
+        meta: `${new Date(created.updated_at).toLocaleDateString()} · 0 sources`,
+        bgClass:
+          NOTEBOOK_BG_CLASSES[current.length % NOTEBOOK_BG_CLASSES.length]!,
+      },
+      ...current,
+    ]);
+    navigate(`/notebook/${created.id}`);
+    closeCreateNotebookModal();
+  };
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredNotebooks = normalizedQuery
     ? notebooks.filter((notebook) =>
@@ -67,11 +96,7 @@ function App() {
             </p> */}
           </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleLogout}
-          >
+          <Button type="button" variant="outline" onClick={handleLogout}>
             ← Wyloguj się
           </Button>
         </div>
@@ -89,7 +114,7 @@ function App() {
           <NotebookActionBar
             searchQuery={searchQuery}
             onSearchQueryChange={setSearchQuery}
-            onCreateNotebook={goToNotebookWithCreateModal}
+            onCreateNotebook={openNotebookCreateModal}
           />
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -97,11 +122,11 @@ function App() {
               className="transition-all hover:-translate-y-0.5 border-dashed hover:border-white/20 cursor-pointer"
               role="button"
               tabIndex={0}
-              onClick={goToNotebookWithCreateModal}
+              onClick={openNotebookCreateModal}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  goToNotebookWithCreateModal();
+                  openNotebookCreateModal();
                 }
               }}
             >
@@ -143,13 +168,22 @@ function App() {
               </Link>
             ))}
           </div>
-          {filteredNotebooks.length === 0 && (
+          {filteredNotebooks.length === 0 && searchQuery.trim() !== "" && (
             <p className="rounded-xl border border-dashed border-border/70 bg-background/30 px-4 py-6 text-center text-sm text-muted-foreground">
               Brak notatnikow pasujacych do frazy "{searchQuery}".
             </p>
           )}
         </section>
       </main>
+      <CreateNotebookModal
+        open={isCreateNotebookModalOpen}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen) {
+            closeCreateNotebookModal();
+          }
+        }}
+        onCreateNotebook={handleCreateNotebook}
+      />
     </>
   );
 }

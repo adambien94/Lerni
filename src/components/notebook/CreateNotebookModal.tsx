@@ -13,21 +13,29 @@ import { Input } from "@/components/ui/input";
 type CreateNotebookModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onCreateNotebook: (title: string) => Promise<void>;
 };
 
 export function CreateNotebookModal({
   open,
   onOpenChange,
+  onCreateNotebook,
 }: CreateNotebookModalProps) {
   const [title, setTitle] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const sanitizedTitle = title.trim();
     if (!sanitizedTitle) return;
 
-    setTitle("");
-    onOpenChange(false);
+    setIsSubmitting(true);
+    void onCreateNotebook(sanitizedTitle)
+      .then(() => {
+        setTitle("");
+        onOpenChange(false);
+      })
+      .finally(() => setIsSubmitting(false));
   };
 
   return (
@@ -53,10 +61,11 @@ export function CreateNotebookModal({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isSubmitting}
             >
               Anuluj
             </Button>
-            <Button type="submit" disabled={!title.trim()}>
+            <Button type="submit" disabled={!title.trim() || isSubmitting}>
               Utwórz notatnik
             </Button>
           </DialogFooter>

@@ -1,12 +1,12 @@
 import { ArrowUp, BookOpenText, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAppStore } from "@/store/useAppStore";
 
-export function SummarySection() {
-  const checkedSourcesCount = useAppStore(
-    (state) => state.sources.filter((source) => source.checked).length,
-  );
+type SummarySectionProps = {
+  checkedSourcesCount: number;
+};
+
+export function SummarySection({ checkedSourcesCount }: SummarySectionProps) {
   const sourceLabel = checkedSourcesCount === 1 ? "source" : "sources";
 
   return (

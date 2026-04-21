@@ -35,7 +35,10 @@ export default function Login() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) {
       setAuthError(error.message);
       setIsSubmitting(false);
@@ -55,8 +58,8 @@ export default function Login() {
   return (
     <main className="mx-auto grid min-h-screen w-full max-w-xl gap-8 px-4 py-10 md:grid-cols-1 md:items-center">
       <div className="relative overflow-hidden rounded-2xl p-0 sm:p-6  text-slate-200 md:p-8">
-        <div className="bg-[#141414]  border border-border shadow-lg px-6 pb-6 pt-14 rounded-3xl">
-          <header className="mb-6 space-y-2 text-center">
+        <div className="bg-[#141414]  border border-border shadow-lg p-6 pt-8 rounded-3xl">
+          <header className="mb-6 space-y-2">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               {isRegisterMode ? "Register" : "Log in"}
             </h2>
@@ -87,12 +90,20 @@ export default function Login() {
               />
             </Field>
 
-            <div className="w-full mt-10">
+            <div className="flex mt-6 items-center justify-between">
               <Button
-                type="submit"
-                className="w-full"
+                type="button"
+                variant="ghost"
+                onClick={toggleAuthMode}
+                className=""
                 disabled={isSubmitting}
               >
+                {isRegisterMode
+                  ? "Already have an account?"
+                  : "Create new account"}
+              </Button>
+
+              <Button type="submit" className="" disabled={isSubmitting}>
                 {isSubmitting
                   ? "Please wait..."
                   : isRegisterMode
@@ -113,20 +124,6 @@ export default function Login() {
               {authMessage}
             </p>
           )}
-
-          <div className="mt-4 w-full">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={toggleAuthMode}
-              className="w-full"
-              disabled={isSubmitting}
-            >
-              {isRegisterMode
-                ? "Create new account"
-                : "Already have an account?"}
-            </Button>
-          </div>
         </div>
       </div>
     </main>
