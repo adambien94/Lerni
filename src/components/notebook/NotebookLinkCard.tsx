@@ -33,7 +33,7 @@ export function NotebookLinkCard({
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="h-10 w-10 rounded-full cursor-pointer"
+                className="h-10 w-10 rounded-full"
                 aria-label={`Wiecej opcji dla ${title}`}
               >
                 <MoreVertical className="h-4 w-4" />
