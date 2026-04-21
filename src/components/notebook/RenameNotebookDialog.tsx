@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,68 +10,65 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-type CreateNotebookModalProps = {
+type RenameNotebookDialogProps = {
   open: boolean;
+  initialTitle: string;
   onOpenChange: (open: boolean) => void;
-  onCreateNotebook: (title: string) => Promise<void>;
+  onSave: (title: string) => Promise<void>;
 };
 
-export function CreateNotebookModal({
+export function RenameNotebookDialog({
   open,
+  initialTitle,
   onOpenChange,
-  onCreateNotebook,
-}: CreateNotebookModalProps) {
-  const [title, setTitle] = useState("");
+  onSave,
+}: RenameNotebookDialogProps) {
+  const [title, setTitle] = useState(initialTitle);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) {
-      setTitle("");
+  useEffect(() => {
+    if (open) {
+      setTitle(initialTitle);
       setErrorMessage(null);
     }
-    onOpenChange(nextOpen);
-  };
+  }, [initialTitle, open]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const sanitizedTitle = title.trim();
-    if (!sanitizedTitle) return;
-
+    const value = title.trim();
+    if (!value) return;
     setErrorMessage(null);
     setIsSubmitting(true);
-    void onCreateNotebook(sanitizedTitle)
-      .then(() => {
-        setTitle("");
-        handleOpenChange(false);
-      })
+    void onSave(value)
+      .then(() => onOpenChange(false))
       .catch((error: unknown) => {
         const message =
           error instanceof Error
             ? error.message
-            : "Nie udalo sie utworzyc notatnika. Sprobuj ponownie.";
+            : "Nie udalo sie zaktualizowac tytulu notatnika.";
         setErrorMessage(message);
       })
       .finally(() => setIsSubmitting(false));
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Utwórz nowy notatnik</DialogTitle>
+          <DialogTitle>Nadaj nazwę notatnikowi</DialogTitle>
           <DialogDescription>
-            Wpisz nazwę notatnika, który chcesz utworzyć.
+            Notatnik został utworzony. Ustaw własny tytuł teraz lub później.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            id="notebook-title"
+            id="notebook-rename-title"
             name="title"
-            placeholder="np. Untitled notebook"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             autoFocus
+            placeholder="np. Matematyka - egzamin"
           />
           {errorMessage ? (
             <p className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -82,13 +79,13 @@ export function CreateNotebookModal({
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleOpenChange(false)}
+              onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
             >
-              Anuluj
+              Później
             </Button>
             <Button type="submit" disabled={!title.trim() || isSubmitting}>
-              Utwórz notatnik
+              Zapisz tytuł
             </Button>
           </DialogFooter>
         </form>

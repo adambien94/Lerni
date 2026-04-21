@@ -61,9 +61,21 @@ export async function listNotebooks(): Promise<NotebookListItemDto[]> {
 }
 
 export async function createNotebook(title: string): Promise<NotebookRow> {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError) {
+    throw new Error(authError.message);
+  }
+  if (!user) {
+    throw new Error("User is not authenticated.");
+  }
+
   const { data, error } = await supabase
     .from("notebooks")
-    .insert({ title: title.trim() })
+    .insert({ title: title.trim(), user_id: user.id })
     .select("id, title, status, created_at, updated_at")
     .single();
 
@@ -84,6 +96,18 @@ export async function getNotebookById(id: string): Promise<NotebookRow | null> {
     throw new Error(error.message);
   }
   return data;
+}
+
+export async function renameNotebook(notebookId: string, title: string) {
+  const value = title.trim();
+  const { error } = await supabase
+    .from("notebooks")
+    .update({ title: value })
+    .eq("id", notebookId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function listNotebookSources(

@@ -1,41 +1,38 @@
 import { Loader2, NotebookIcon } from "lucide-react";
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { CreateNotebookModal } from "@/components/notebook/CreateNotebookModal";
+import { RenameNotebookDialog } from "@/components/notebook/RenameNotebookDialog";
 import { Button } from "@/components/ui/button";
 import {
   addNotebookSource,
-  createNotebook,
   deleteNotebookSource,
   getNotebookById,
   listNotebookSources,
+  renameNotebook,
   renameNotebookSource,
   updateNotebookSourceSelection,
 } from "@/lib/notebooks";
 import { SourcesSection } from "@/components/notebook/SourcesSection";
 import { StudioSection } from "@/components/notebook/StudioSection";
 import { SummarySection } from "@/components/notebook/SummarySection";
-import { useLayoutStore } from "@/stores/layoutStore";
 import type { NotebookSourceDto } from "@/types/notebook";
 
 const NOTEBOOK_FAKE_LOAD_MS = 900;
 
 export default function Notebook() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [readyForNotebookId, setReadyForNotebookId] = useState<string | null>(
     null,
-  );
-  const isCreateNotebookModalOpen = useLayoutStore(
-    (state) => state.isCreateNotebookModalOpen,
-  );
-  const closeCreateNotebookModal = useLayoutStore(
-    (state) => state.closeCreateNotebookModal,
   );
   const [sourcesCollapsed, setSourcesCollapsed] = useState(false);
   const [studioCollapsed, setStudioCollapsed] = useState(false);
   const [isStudioExpanded, setIsStudioExpanded] = useState(false);
   const [notebookTitle, setNotebookTitle] = useState("Notebook");
+  const [isRenameNotebookModalOpen, setIsRenameNotebookModalOpen] =
+    useState(false);
   const [sourceUrl, setSourceUrl] = useState("");
   const [sources, setSources] = useState<NotebookSourceDto[]>([]);
 
@@ -71,6 +68,16 @@ export default function Notebook() {
       cancelled = true;
     };
   }, [notebookId]);
+
+  useEffect(() => {
+    if (!notebookId) return;
+    if (!location.state || typeof location.state !== "object") return;
+    if (!("openRenameTitleModal" in location.state)) return;
+    if (location.state.openRenameTitleModal !== true) return;
+
+    setIsRenameNotebookModalOpen(true);
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate, notebookId]);
 
   const effectiveSources = notebookId ? sources : [];
   const checkedSourcesCount = effectiveSources.filter(
@@ -137,8 +144,11 @@ export default function Notebook() {
     }
   };
 
-  const handleCreateNotebook = async (title: string) => {
-    await createNotebook(title);
+  const handleRenameNotebook = async (title: string) => {
+    if (!notebookId) return;
+    await renameNotebook(notebookId, title);
+    setNotebookTitle(title.trim());
+    toast.success("Tytul notatnika zostal zaktualizowany.");
   };
 
   const desktopGridVars = useMemo(() => {
@@ -212,14 +222,11 @@ export default function Notebook() {
           onStudioExpandedChange={setIsStudioExpanded}
         />
       </section>
-      <CreateNotebookModal
-        open={isCreateNotebookModalOpen}
-        onCreateNotebook={handleCreateNotebook}
-        onOpenChange={(nextOpen) => {
-          if (!nextOpen) {
-            closeCreateNotebookModal();
-          }
-        }}
+      <RenameNotebookDialog
+        open={isRenameNotebookModalOpen}
+        initialTitle={effectiveNotebookTitle}
+        onOpenChange={setIsRenameNotebookModalOpen}
+        onSave={handleRenameNotebook}
       />
     </main>
   );

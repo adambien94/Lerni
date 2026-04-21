@@ -1,39 +1,22 @@
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CreateNotebookModal } from "@/components/notebook/CreateNotebookModal";
 import { NotebookActionBar } from "@/components/notebook/NotebookActionBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { createNotebook, listNotebooks } from "@/lib/notebooks";
 import { supabase } from "@/lib/supabase";
-import { useLayoutStore } from "@/stores/layoutStore";
 
 const NOTEBOOK_BG_CLASSES = [
   "from-zinc-400/50 to-zinc-800/80",
   "from-violet-400/50 to-zinc-800/80",
   "from-emerald-400/50 to-zinc-800/80",
+  "from-pink-400/50 to-zinc-800/80",
+  "from-amber-400/50 to-zinc-800/80",
 ] as const;
 
 function App() {
   const navigate = useNavigate();
-  const openCreateNotebookModal = useLayoutStore(
-    (state) => state.openCreateNotebookModal,
-  );
-  const closeCreateNotebookModal = useLayoutStore(
-    (state) => state.closeCreateNotebookModal,
-  );
-  const isCreateNotebookModalOpen = useLayoutStore(
-    (state) => state.isCreateNotebookModalOpen,
-  );
-
-  useEffect(() => {
-    closeCreateNotebookModal();
-  }, [closeCreateNotebookModal]);
-
-  const openNotebookCreateModal = () => {
-    openCreateNotebookModal();
-  };
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/login");
@@ -63,8 +46,8 @@ function App() {
     };
   }, []);
 
-  const handleCreateNotebook = async (title: string) => {
-    const created = await createNotebook(title);
+  const handleCreateNotebook = async () => {
+    const created = await createNotebook("Untitled notebook");
     setNotebooks((current) => [
       {
         id: created.id,
@@ -75,8 +58,9 @@ function App() {
       },
       ...current,
     ]);
-    navigate(`/notebook/${created.id}`);
-    closeCreateNotebookModal();
+    navigate(`/notebook/${created.id}`, {
+      state: { openRenameTitleModal: true },
+    });
   };
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredNotebooks = normalizedQuery
@@ -114,7 +98,9 @@ function App() {
           <NotebookActionBar
             searchQuery={searchQuery}
             onSearchQueryChange={setSearchQuery}
-            onCreateNotebook={openNotebookCreateModal}
+            onCreateNotebook={() => {
+              void handleCreateNotebook();
+            }}
           />
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -122,11 +108,13 @@ function App() {
               className="transition-all hover:-translate-y-0.5 border-dashed hover:border-white/20 cursor-pointer"
               role="button"
               tabIndex={0}
-              onClick={openNotebookCreateModal}
+              onClick={() => {
+                void handleCreateNotebook();
+              }}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  openNotebookCreateModal();
+                  void handleCreateNotebook();
                 }
               }}
             >
@@ -175,15 +163,6 @@ function App() {
           )}
         </section>
       </main>
-      <CreateNotebookModal
-        open={isCreateNotebookModalOpen}
-        onOpenChange={(nextOpen) => {
-          if (!nextOpen) {
-            closeCreateNotebookModal();
-          }
-        }}
-        onCreateNotebook={handleCreateNotebook}
-      />
     </>
   );
 }
