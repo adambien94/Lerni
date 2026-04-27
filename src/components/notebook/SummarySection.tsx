@@ -30,7 +30,7 @@ export function SummarySection({
             <BookOpenText className="h-4 w-4 text-muted-foreground" />
             Podsumowanie
           </CardTitle>
-          <Button
+          {/* <Button
             type="button"
             size="sm"
             disabled={!canGenerate}
@@ -48,7 +48,7 @@ export function SummarySection({
                 Wygeneruj (Gemini)
               </>
             )}
-          </Button>
+          </Button> */}
         </div>
       </CardHeader>
       <CardContent className="min-h-0 flex-1 overflow-y-auto p-4">
@@ -102,6 +102,32 @@ export function SummarySection({
           </article>
         ) : null}
       </CardContent>
+      <div className="flex justify-between items-center p-3 border-t border-white/5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3 py-1 text-xs text-muted-foreground">
+          <span className="text-muted-foreground/80">
+            {checkedSourcesCount} {sourceLabel} zaznaczonych
+          </span>
+        </div>
+        <Button
+          type="button"
+          size="sm"
+          disabled={!canGenerate}
+          onClick={onGenerateSummary}
+          className="shrink-0 gap-1.5"
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              Generowanie…
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-3.5 w-3.5" />
+              Wygeneruj (Gemini)
+            </>
+          )}
+        </Button>
+      </div>
     </Card>
   );
 }

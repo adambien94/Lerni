@@ -182,7 +182,7 @@ function App() {
               }}
             >
               <CardContent className="flex min-h-[190px] flex-col items-center justify-center gap-3">
-                <div className="flex h-12 w-12  items-center justify-center rounded-full bg-primary/15 text-primary">
+                <div className="flex h-12 w-12  items-center justify-center rounded-full bg-zinc-200/15 text-zinc-200">
                   <Plus className="h-5 w-5" />
                 </div>
                 <p className="text-sm font-medium text-foreground">

@@ -23,7 +23,7 @@ export function NotebookLinkCard({
   onDelete,
 }: NotebookLinkCardProps) {
   return (
-    <Card className="group overflow-hidden transition-transform duration-200 group-hover:-translate-y-0.5">
+    <Card className="group overflow-hidden transition-transform duration-200 hover:-translate-y-0.5">
       <CardContent className="relative flex min-h-[190px] flex-col justify-between p-5">
         <div className="relative z-20 self-end">
           <ActionDropdown

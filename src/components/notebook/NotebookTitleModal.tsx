@@ -87,12 +87,18 @@ export function NotebookTitleModal({
             <Button
               type="button"
               variant="ghost"
+              size="sm"
               onClick={() => handleOpenChange(false)}
               disabled={isSubmitting}
             >
               Anuluj
             </Button>
-            <Button type="submit" disabled={!title.trim() || isSubmitting}>
+            <Button
+              type="submit"
+              disabled={!title.trim() || isSubmitting}
+              variant="outline"
+              size="sm"
+            >
               {submitLabel}
             </Button>
           </DialogFooter>

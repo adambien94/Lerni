@@ -57,10 +57,20 @@ export function RenameSourceDialog({
             autoFocus
           />
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              size="sm"
+            >
               Anuluj
             </Button>
-            <Button type="submit" disabled={!value.trim()}>
+            <Button
+              type="submit"
+              disabled={!value.trim()}
+              size="sm"
+              variant="outline"
+            >
               Zapisz
             </Button>
           </DialogFooter>

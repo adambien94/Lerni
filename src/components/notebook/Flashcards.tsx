@@ -113,16 +113,21 @@ export function Flashcards() {
             className="group relative isolate w-full cursor-pointer select-none rounded-3xl text-left transition focus:outline-none"
             aria-label={isFlipped ? "Pokaż pytanie" : "Pokaż odpowiedź"}
           >
-            {/* Soft aurora-style glow behind the card (below flip layer) */}
+            {/* Aurora-style wash: gradients stay smooth on low bit-depth / subpixel layouts */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-[-8%] bottom-[0%] top-[18%] z-0"
             >
-              <div className="relative mx-auto h-full max-w-[490px]">
-                <div className="absolute bottom-0 left-[-6%] h-[min(100%,380px)] w-[min(78%,340px)] rounded-full bg-[hsl(239_45%_32%/0.42)] blur-[100px]" />
-                <div className="absolute bottom-0 right-[-6%] h-[min(100%,380px)] w-[min(78%,340px)] rounded-full bg-[hsl(168_40%_28%/0.36)] blur-[100px]" />
-                <div className="absolute bottom-[8%] left-1/2 h-[min(55%,220px)] w-[min(70%,280px)] -translate-x-1/2 rounded-full bg-[hsl(210_35%_38%/0.18)] blur-[90px]" />
-              </div>
+              {/* <div
+                className="relative mx-auto h-full max-w-[490px]"
+                style={{
+                  backgroundImage: [
+                    "radial-gradient(ellipse 78% 72% at 14% 100%, hsl(239 45% 32% / 0.44) 0%, transparent 68%)",
+                    "radial-gradient(ellipse 78% 72% at 86% 100%, hsl(168 40% 28% / 0.38) 0%, transparent 68%)",
+                    "radial-gradient(ellipse 62% 48% at 50% 100%, hsl(210 35% 38% / 0.22) 0%, transparent 62%)",
+                  ].join(","),
+                }}
+              /> */}
             </div>
 
             {/* 3D flip container */}
@@ -143,7 +148,7 @@ export function Flashcards() {
                 {/* Front */}
                 <div className="absolute inset-0 backface-hidden">
                   <div className="relative">
-                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#1E1E1F]  border border-white/10  shadow-lg">
+                    <div className="relative z-10 flex min-h-[360px] items-center justify-center rounded-3xl border border-white/10 bg-[#262628] px-6 py-14 text-left shadow-lg">
                       <div className="pointer-events-none absolute left-6 top-6 text-lg text-muted-foreground">
                         {index + 1}/{total}
                       </div>
@@ -165,7 +170,7 @@ export function Flashcards() {
                     {index + 1}/{total}
                   </div>
                   <div className="relative">
-                    <div className="relative z-10 rounded-3xl flex min-h-[360px] items-center justify-center px-6 py-14 text-left bg-[#101010]  border border-white/10 shadow-lg">
+                    <div className="relative z-10 flex min-h-[360px] items-center justify-center rounded-3xl border border-white/10 bg-[#181818] px-6 py-14 text-left shadow-lg">
                       <div className="text-left text-2xl font-medium tracking-tight leading-relaxed">
                         {current.back}
                       </div>
