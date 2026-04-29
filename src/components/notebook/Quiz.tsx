@@ -83,10 +83,10 @@ export function Quiz() {
                     aria-selected={isSelected}
                     onClick={() => setSelectedOptionId(option.id)}
                     className={cn(
-                      "w-full rounded-xl border px-4 py-4 text-left text-sm leading-relaxed transition-colors",
+                      "w-full rounded-xl border px-4 py-4 text-left text-sm  transition-colors",
                       isSelected
                         ? "border-primary/70 bg-primary/15 text-foreground"
-                        : "border-white/10 bg-zinc-900/60 text-muted-foreground hover:border-white/20 hover:bg-zinc-900/80",
+                        : "border-white/10 bg-zinc-900 text-muted-foreground hover:border-white/20 hover:bg-zinc-900/80",
                     )}
                   >
                     <span className="font-medium">{option.id}.</span>{" "}
@@ -119,7 +119,7 @@ export function Quiz() {
             <Button type="button" variant="outline" size="sm" onClick={goPrev}>
               Wstecz
             </Button>
-            <Button type="button" size="sm" onClick={goNext}>
+            <Button type="button" size="sm" onClick={goNext} variant="outline">
               Dalej
             </Button>
           </div>

@@ -114,6 +114,7 @@ export function SummarySection({
           disabled={!canGenerate}
           onClick={onGenerateSummary}
           className="shrink-0 gap-1.5"
+          variant="outline"
         >
           {isGenerating ? (
             <>

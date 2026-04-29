@@ -175,7 +175,9 @@ export function StudioSection({
                         <BadgeQuestionMark className="h-5 w-5 text-violet-200/80" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-semibold">Singletion Quiz</p>
+                        <p className="text-sm font-semibold">
+                          Singletion Quiz {item}
+                        </p>
                         <p className="text-xs text-muted-foreground">
                           13 list 2025 · 4 źródeł
                         </p>
